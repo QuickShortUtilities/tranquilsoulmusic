@@ -34,6 +34,21 @@ Plain HTML. The nav and footer are duplicated per page on purpose — there is n
 templating layer to learn, and a static site this size does not need one. If a
 nav link changes, `grep -l 'href="/radio.html"' *.html` finds every file.
 
+## Changing the domain
+
+```
+./scripts-set-domain.sh tranquilicy.com
+```
+
+Rewrites every canonical, `og:url` and sitemap entry in one pass. Then add the
+domain under Cloudflare Pages → Custom domains and point the nameservers.
+
+**Recommendation:** buy `tranquilicy.com` and make it the primary. Tranquilicy is
+the product people will search for and type; Tranquil Soul Music is the label
+behind it. Keep `tranquilsoulmusic.com` as a 301 to preserve whatever the old
+site ranks for — `_redirects` already handles the old `/discography` and
+`/contact` paths.
+
 ## Before launch
 
 - [ ] Point the email forms at a list provider: set `data-endpoint` on each
