@@ -70,7 +70,7 @@
   <p class="eyebrow">The Sunday send</p>
   <h3 style="font-size:1.6rem">One piece of music, one thing worth reading.</h3>
   <p style="margin-bottom:0">Every Sunday morning. An unreleased track and a short note on sleep, attention or recovery.</p>
-  <form data-capture="sauna-and-sound">
+  <form data-capture="sauna-and-sound" data-endpoint="https://lorna-api.tranquilsoul.workers.dev/v1/subscribe">
     <div class="form-row">
       <label class="skip" for="e-sauna-and-sound">Email address</label>
       <input id="e-sauna-and-sound" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
@@ -103,7 +103,7 @@
     </div>
     <div class="foot-legal">
       <span>&copy; <span data-year></span> Tranquil Soul Music</span>
-      <span>Made for quiet.</span>
+      <span><a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a></span>
     </div>
   </div>
 </footer>

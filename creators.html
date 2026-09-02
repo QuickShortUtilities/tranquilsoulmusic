@@ -93,7 +93,7 @@
     <p class="eyebrow">Early access</p>
     <h2 style="font-size:2rem">Opening soon.</h2>
     <p>We're onboarding the first creators now. Leave an address and you'll get in first, at a rate that won't rise.</p>
-    <form data-capture="creators">
+    <form data-capture="creators" data-endpoint="https://lorna-api.tranquilsoul.workers.dev/v1/subscribe">
       <div class="form-row">
         <label class="skip" for="e-creators">Email address</label>
         <input id="e-creators" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
@@ -126,7 +126,7 @@
     </div>
     <div class="foot-legal">
       <span>&copy; <span data-year></span> Tranquil Soul Music</span>
-      <span>Made for quiet.</span>
+      <span><a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a></span>
     </div>
   </div>
 </footer>
