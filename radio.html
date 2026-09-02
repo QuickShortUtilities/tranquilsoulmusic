@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>24/7 ambient radio — Tranquil Soul</title>
+<meta name="description" content="Three continuous ambient streams for sleep, focus and the end of the day. Free, no account needed.">
+<link rel="canonical" href="https://www.tranquilsoulmusic.com/radio.html">
+<meta property="og:title" content="24/7 ambient radio — Tranquil Soul">
+<meta property="og:description" content="Three continuous ambient streams for sleep, focus and the end of the day. Free, no account needed.">
+<meta name="theme-color" content="#0b0a09">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/">Tranquil Soul</a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">&#9776;</button>
+    <nav class="nav-links" id="nav-links">
+      <a href="/">Home</a>
+      <a href="/radio.html" aria-current="page">Radio</a>
+      <a href="/app.html">App</a>
+      <a href="/journal.html">Journal</a>
+      <a href="/creators.html">Creators</a>
+      <a href="/licensing.html">Licensing</a>
+      <a href="/shop.html">Shop</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+
+<section class="hero" style="padding:72px 0 40px"><div class="wrap">
+  <p class="eyebrow">Live &middot; always on</p>
+  <h1>24/7 radio.</h1>
+  <p class="lede">Three continuous streams. Free, no account, nothing to install.</p>
+</div></section>
+<section style="padding-top:0"><div class="wrap">
+  <div class="player">
+    <button class="play-btn" id="radio-play" aria-label="Play radio">&#9654;</button>
+    <div class="player-meta">
+      <div class="name" id="radio-name">Deep Space</div>
+      <div class="state" id="radio-state">Ready</div>
+    </div>
+    <label><span class="skip">Volume</span>
+      <input class="vol" id="radio-vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume"></label>
+    <audio id="radio-audio" preload="none"></audio>
+  </div>
+  <div class="station-list">
+    <button class="station" data-name="Deep Space" data-src="https://streams.tranquilsoulmusic.com/deepspace.mp3">
+      <span class="dot"></span><span>Deep Space<small>Slow, dark and wide. For sleep and long work.</small></span></button>
+    <button class="station" data-name="Golden Hour" data-src="https://streams.tranquilsoulmusic.com/goldenhour.mp3">
+      <span class="dot"></span><span>Golden Hour<small>Warm and unhurried. For the end of the day.</small></span></button>
+    <button class="station" data-name="Still Water" data-src="https://streams.tranquilsoulmusic.com/stillwater.mp3">
+      <span class="dot"></span><span>Still Water<small>Dry and articulate. Stays out of the way.</small></span></button>
+  </div>
+  <p class="form-note" style="margin-top:20px">Streams keep playing while you use other tabs. On iPhone, the app plays with the screen locked.</p>
+</div></section>
+<section class="tight"><div class="wrap"><div class="card capture">
+  <p class="eyebrow">The Sunday send</p>
+  <h3 style="font-size:1.6rem">One piece of music, one thing worth reading.</h3>
+  <p style="margin-bottom:0">Every Sunday morning. An unreleased track and a short note on sleep, attention or recovery.</p>
+  <form data-capture="radio">
+    <div class="form-row">
+      <label class="skip" for="email-radio">Email address</label>
+      <input id="email-radio" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+      <button class="btn btn-primary" type="submit">Join free</button>
+    </div>
+    <p class="form-status" role="status"></p>
+    <p class="form-note">Free forever. We never sell your address.</p>
+  </form>
+</div></div></section></main>
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Listen</h4>
+        <a href="/radio.html">24/7 Radio</a>
+        <a href="https://open.spotify.com/" rel="noopener">Spotify</a>
+        <a href="https://www.youtube.com/" rel="noopener">YouTube</a>
+        <a href="https://soundcloud.com/" rel="noopener">SoundCloud</a></div>
+      <div><h4>Explore</h4>
+        <a href="/app.html">The app</a>
+        <a href="/journal.html">Journal</a>
+        <a href="/shop.html">Shop</a></div>
+      <div><h4>Business</h4>
+        <a href="/creators.html">For creators</a>
+        <a href="/licensing.html">Sync licensing</a>
+        <a href="mailto:relax@tranquilsoulmusic.com">relax@tranquilsoulmusic.com</a></div>
+      <div><h4>Elsewhere</h4>
+        <a href="https://www.tranquilsleepmusic.com/" rel="noopener">Tranquil Sleep Music</a>
+        <a href="https://www.sub-liminal.com/" rel="noopener">Sub-Liminal</a></div>
+    </div>
+    <div class="foot-legal">
+      <span>&copy; <span data-year></span> Tranquil Soul Music</span>
+      <span>Made for quiet.</span>
+    </div>
+  </div>
+</footer>
+<script src="/assets/site.js"></script>
+</body>
+</html>

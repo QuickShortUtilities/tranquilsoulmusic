@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Revenue model — internal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  th,td { padding:10px 8px; text-align:left; border-bottom:1px solid var(--line); }
+  th { font-size:.66rem; letter-spacing:.16em; text-transform:uppercase; color:var(--text-3); font-weight:500; }
+  td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; }
+  input[type=number]{ width:100%; padding:9px 11px; border-radius:9px; background:rgba(0,0,0,.35);
+    border:1px solid var(--line); color:var(--text); font-family:var(--ui); font-size:.9rem; text-align:right; }
+  input[type=number]:focus{ outline:2px solid var(--gold); outline-offset:1px; }
+  .verdict { font-family:var(--display); font-size:1.5rem; line-height:1.35; color:var(--text); }
+  .big { font-family:var(--display); font-size:2.4rem; color:var(--gold-text); line-height:1; }
+  .flag { border-left:2px solid var(--gold); padding-left:16px; margin:10px 0; color:var(--text-2); font-size:.92rem; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav"><div class="wrap nav-inner">
+  <a class="brand" href="/">Tranquil Soul</a>
+  <nav class="nav-links" id="nav-links"><a href="/">Back to site</a></nav>
+</div></header>
+
+<main id="main">
+<section class="hero" style="padding:64px 0 32px"><div class="wrap">
+  <p class="eyebrow">Internal &middot; not indexed</p>
+  <h1>What should 21M plays<br>have paid?</h1>
+  <p class="lede">Put the Songstats split in the left column. This works out what that volume ought to have earned, and how much of the gap is a collection problem rather than a platform problem.</p>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="card">
+    <table>
+      <thead><tr>
+        <th>Platform</th><th class="num">Plays</th>
+        <th class="num">Rate /play</th><th class="num">Expected</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+      <tfoot><tr>
+        <th>Total</th><th class="num" id="totalPlays">0</th>
+        <th class="num" id="blended">&mdash;</th><th class="num" id="totalExpected">&pound;0</th>
+      </tr></tfoot>
+    </table>
+  </div>
+
+  <div class="grid grid-2" style="margin-top:18px">
+    <div class="card">
+      <p class="eyebrow">Actually received</p>
+      <label class="skip" for="actual">Actual revenue</label>
+      <input id="actual" type="number" value="2000" min="0" step="50">
+      <p class="form-note">All-time, net of distributor.</p>
+    </div>
+    <div class="card">
+      <p class="eyebrow">Recording royalties expected</p>
+      <span class="big" id="expectedBig">&pound;0</span>
+      <p class="form-note">Master-side only. Publishing sits on top &mdash; see below.</p>
+    </div>
+  </div>
+
+  <div class="card capture" style="margin-top:18px">
+    <p class="eyebrow">The gap</p>
+    <p class="verdict" id="verdict">Enter a split above.</p>
+    <div id="flags"></div>
+  </div>
+</div></section>
+
+<hr class="rule">
+
+<section><div class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">Separately collectable</p>
+    <h2>Publishing is a second cheque.</h2>
+    <p>Distributors pay the <em>recording</em>. Songwriting royalties are collected by a different body entirely, and are the most commonly missed money in independent catalogues.</p>
+  </div>
+  <div class="grid grid-3">
+    <div class="card"><h3>PRS for Music</h3><p>Performance royalties &mdash; streaming, radio, and anywhere the music plays in public. Roughly 10&ndash;15% on top of the master side. If the catalogue was never registered, this has gone uncollected.</p></div>
+    <div class="card"><h3>MCPS / mechanical</h3><p>Mechanical royalties on streams and downloads. Usually collected alongside PRS in the UK.</p></div>
+    <div class="card"><h3>YouTube Content ID</h3><p>Pays when <em>other people</em> use the music. For meditation and ambient this is often larger than the artist's own channel &mdash; and it collects nothing unless the catalogue is claimed.</p></div>
+  </div>
+  <p class="form-note" style="margin-top:22px;max-width:64ch">Rates are 2026 blended estimates and vary by territory, subscriber mix and deal. Treat the output as an order of magnitude, not an invoice.</p>
+</div></section>
+</main>
+
+<footer class="site"><div class="wrap"><div class="foot-legal">
+  <span>&copy; <span data-year></span> Tranquil Soul Music</span><span>Internal tool</span>
+</div></div></footer>
+
+<script>
+/* Blended 2026 per-play estimates in GBP, master side, net of a typical
+   distributor cut. Ranges are wide; these sit mid-band. */
+var PLATFORMS = [
+  { id:"spotify",    name:"Spotify",              rate:0.0028, plays:0 },
+  { id:"apple",      name:"Apple Music",          rate:0.0080, plays:0 },
+  { id:"ytmusic",    name:"YouTube Music / Art Tracks", rate:0.0012, plays:0 },
+  { id:"ytchannel",  name:"YouTube (own channel)", rate:0.0008, plays:0, note:"ambient RPM is low" },
+  { id:"amazon",     name:"Amazon Music",         rate:0.0040, plays:0 },
+  { id:"deezer",     name:"Deezer",               rate:0.0045, plays:0 },
+  { id:"soundcloud", name:"SoundCloud",           rate:0.0025, plays:0 },
+  { id:"tiktok",     name:"TikTok",               rate:0.0002, plays:0, note:"effectively promotional" },
+  { id:"other",      name:"Other / Pandora etc.", rate:0.0015, plays:0 }
+];
+
+var gbp = function (n) {
+  return "£" + n.toLocaleString("en-GB", { maximumFractionDigits: 0 });
+};
+
+var rows = document.getElementById("rows");
+PLATFORMS.forEach(function (p) {
+  var tr = document.createElement("tr");
+  tr.innerHTML =
+    '<td>' + p.name + (p.note ? '<br><small style="color:var(--text-3)">' + p.note + '</small>' : '') + '</td>' +
+    '<td class="num"><label class="skip" for="in-' + p.id + '">' + p.name + ' plays</label>' +
+      '<input id="in-' + p.id + '" type="number" min="0" step="10000" value="0"></td>' +
+    '<td class="num" style="color:var(--text-3)">£' + p.rate.toFixed(4) + '</td>' +
+    '<td class="num" id="out-' + p.id + '">£0</td>';
+  rows.appendChild(tr);
+  tr.querySelector("input").addEventListener("input", function (e) {
+    p.plays = Number(e.target.value) || 0;
+    recalc();
+  });
+});
+
+document.getElementById("actual").addEventListener("input", recalc);
+
+function recalc() {
+  var plays = 0, expected = 0;
+  PLATFORMS.forEach(function (p) {
+    var v = p.plays * p.rate;
+    plays += p.plays;
+    expected += v;
+    document.getElementById("out-" + p.id).textContent = gbp(v);
+  });
+
+  document.getElementById("totalPlays").textContent = plays.toLocaleString("en-GB");
+  document.getElementById("totalExpected").textContent = gbp(expected);
+  document.getElementById("expectedBig").textContent = gbp(expected);
+  document.getElementById("blended").textContent =
+    plays ? "£" + (expected / plays).toFixed(5) : "—";
+
+  var actual = Number(document.getElementById("actual").value) || 0;
+  var gap = expected - actual;
+  var verdict = document.getElementById("verdict");
+  var flags = document.getElementById("flags");
+  flags.innerHTML = "";
+
+  if (!plays) { verdict.textContent = "Enter a split above."; return; }
+
+  if (gap > expected * 0.4) {
+    verdict.innerHTML = 'About <strong style="color:var(--gold-text)">' + gbp(gap) +
+      '</strong> looks unaccounted for. That is a collection problem, not a rate problem.';
+    [
+      "Check the catalogue is registered with PRS for Music — performance royalties are never paid by a distributor.",
+      "Check YouTube Content ID is claiming the catalogue. Meditation music is used heavily by other channels.",
+      "Check the distributor is actually delivering to every platform in the split above.",
+      "Check no earlier aggregator still holds rights to part of the catalogue."
+    ].forEach(function (t) {
+      var d = document.createElement("p"); d.className = "flag"; d.textContent = t; flags.appendChild(d);
+    });
+  } else if (gap > 0) {
+    verdict.innerHTML = 'Roughly <strong style="color:var(--gold-text)">' + gbp(gap) +
+      '</strong> below expectation — within the range normal deal terms explain.';
+    var d = document.createElement("p"); d.className = "flag";
+    d.textContent = "Worth confirming PRS registration, but the platform mix is the bigger constraint here.";
+    flags.appendChild(d);
+  } else {
+    verdict.innerHTML = 'Collection looks healthy. The ceiling is the <strong style="color:var(--gold-text)">platform mix</strong> — which is the case for moving listeners to owned channels.';
+  }
+}
+
+document.querySelectorAll("[data-year]").forEach(function (el) {
+  el.textContent = String(new Date().getFullYear());
+});
+recalc();
+</script>
+</body>
+</html>
