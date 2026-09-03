@@ -478,22 +478,27 @@ hr.rule {
 /* Each thumbnail is a lit alcove, not a swatch: a single warm source above the
    object, a hairline where it meets the surface, and a drawn silhouette. Line
    art rather than a photograph — it stays honest about being a drawing, and it
-   costs bytes instead of megabytes. */
-.product .thumb {
+   costs bytes instead of megabytes.
+
+   Both halves of the catalogue's tint pair are used: the light one as the
+   source above the object, the dark one as the ground it sits on. Unscoped
+   from .product so a product page can plate the same drawing large. */
+.thumb {
   position: relative; aspect-ratio: 1; display: grid; place-items: center; overflow: hidden;
   background:
     radial-gradient(120% 82% at 50% 4%, hsl(var(--tint, 34 24% 44%) / .34), transparent 66%),
+    linear-gradient(180deg, hsl(var(--tint-2, 26 20% 8%) / .6), transparent 74%),
     linear-gradient(180deg, #191510, #0c0b0a 78%);
 }
-.product .thumb::before {
+.thumb::before {
   content: ""; position: absolute; left: 14%; right: 14%; bottom: 22%; height: 1px;
   background: linear-gradient(90deg, transparent, rgba(201, 169, 97, .34), transparent);
 }
-.product .thumb::after {
+.thumb::after {
   content: ""; position: absolute; left: 26%; right: 26%; bottom: 20%; height: 14px;
   background: radial-gradient(60% 100% at 50% 0%, rgba(0, 0, 0, .55), transparent 72%);
 }
-.product .figure {
+.figure {
   position: relative; width: 56%; max-width: 152px; color: var(--gold-text);
   fill: none; stroke: currentColor; stroke-width: 1.2;
   stroke-linecap: round; stroke-linejoin: round;
@@ -502,10 +507,12 @@ hr.rule {
   transition: transform .55s var(--ease-out), opacity .45s var(--ease);
 }
 .product:hover .figure { transform: translateY(-5px) scale(1.035); opacity: .92; }
-.product .figure .fillet { fill: currentColor; stroke: none; opacity: .55; }
+.figure .fillet { fill: currentColor; stroke: none; opacity: .55; }
 
 .product .body { border-top: 1px solid rgba(255, 255, 255, .06); padding: 20px 22px 24px; display: flex; flex-direction: column; flex: 1; }
-.product .partner { font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; color: var(--text-3); }
+/* Was .partner, when half the shop was somebody else's. It carries the category
+   now; the label is the only thing that changed. */
+.product .kicker { font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; color: var(--text-3); }
 .product h3 {
   font-size: 1.22rem; margin: .28em 0 .34em; color: var(--text);
   transition: color .3s var(--ease);
@@ -516,6 +523,85 @@ hr.rule {
   margin-top: auto; color: var(--gold-text); font-size: .92rem; font-weight: 500;
   font-variant-numeric: tabular-nums lining-nums; letter-spacing: .02em;
 }
+
+/* ---------- Shop index: category filtering ----------
+   Done in CSS rather than JavaScript. Each category has an empty target above
+   the grid; :target hides everything that does not match. It works with scripts
+   off, it costs nothing, and the URL it leaves behind (/shop.html#scent) is a
+   link a product page can send someone back to. */
+
+.cat-target { display: block; height: 0; scroll-margin-top: calc(var(--nav-h) + 28px); }
+
+.filters {
+  display: flex; flex-wrap: wrap; gap: 0 clamp(16px, 2.6vw, 34px);
+  margin-bottom: clamp(26px, 3.4vw, 40px); border-bottom: 1px solid var(--line-soft);
+}
+.filters a {
+  position: relative; padding: 0 0 14px; color: var(--text-3); text-decoration: none;
+  font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 500;
+  transition: color .3s var(--ease);
+}
+.filters a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: var(--line); transform: scaleX(0); transform-origin: left;
+  transition: transform .4s var(--ease-out);
+}
+.filters a:hover { color: var(--text-2); text-decoration: none; }
+.filters a:hover::after { transform: scaleX(1); }
+.filters .n { margin-left: .55em; opacity: .5; letter-spacing: .06em; font-variant-numeric: tabular-nums lining-nums; }
+
+/* All is lit until a category takes the hash. */
+.filters a[href="#all"] { color: var(--gold-text); }
+.filters a[href="#all"]::after { transform: scaleX(1); background: var(--gold); }
+:is(#scent, #home, #recovery, #wear, #sound):target ~ .shop-index .filters a[href="#all"] { color: var(--text-3); }
+:is(#scent, #home, #recovery, #wear, #sound):target ~ .shop-index .filters a[href="#all"]::after { transform: scaleX(0); }
+
+#scent:target    ~ .shop-index .filters a[href="#scent"],
+#home:target     ~ .shop-index .filters a[href="#home"],
+#recovery:target ~ .shop-index .filters a[href="#recovery"],
+#wear:target     ~ .shop-index .filters a[href="#wear"],
+#sound:target    ~ .shop-index .filters a[href="#sound"] { color: var(--gold-text); }
+
+#scent:target    ~ .shop-index .filters a[href="#scent"]::after,
+#home:target     ~ .shop-index .filters a[href="#home"]::after,
+#recovery:target ~ .shop-index .filters a[href="#recovery"]::after,
+#wear:target     ~ .shop-index .filters a[href="#wear"]::after,
+#sound:target    ~ .shop-index .filters a[href="#sound"]::after { transform: scaleX(1); background: var(--gold); }
+
+#scent:target    ~ .shop-index .grid-products > :not([data-cat="scent"]),
+#home:target     ~ .shop-index .grid-products > :not([data-cat="home"]),
+#recovery:target ~ .shop-index .grid-products > :not([data-cat="recovery"]),
+#wear:target     ~ .shop-index .grid-products > :not([data-cat="wear"]),
+#sound:target    ~ .shop-index .grid-products > :not([data-cat="sound"]) { display: none; }
+
+/* ---------- Product page ----------
+   The drawing on one side at a size that earns the space, the decision on the
+   other. One column below 860px, drawing first, because on a phone the object
+   is what you scrolled for. */
+
+.product-lead { display: grid; gap: clamp(26px, 3.6vw, 52px); align-items: start; }
+@media (min-width: 860px) {
+  .product-lead { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); }
+}
+/* .card, so it inherits the lit top edge — but full bleed, like .product. */
+.plate { padding: 0; overflow: hidden; }
+.plate .figure { width: 48%; max-width: 214px; }
+
+.buy { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: clamp(24px, 3vw, 32px); }
+.buy .amount {
+  font-family: var(--display); font-weight: 400; line-height: 1;
+  font-size: clamp(2rem, 3.2vw, 2.6rem); color: var(--gold-text);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Hairlines rather than a bordered table: three facts, no chrome. */
+.spec { margin: clamp(26px, 3vw, 34px) 0 0; border-top: 1px solid var(--line-soft); }
+.spec > div {
+  display: flex; gap: 20px; justify-content: space-between; align-items: baseline;
+  padding: 13px 0; border-bottom: 1px solid var(--line-soft);
+}
+.spec dt { font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--text-3); }
+.spec dd { margin: 0; font-size: .86rem; color: var(--text-2); text-align: right; }
 
 /* ---------- Journal ---------- */
 

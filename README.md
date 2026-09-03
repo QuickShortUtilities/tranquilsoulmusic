@@ -24,9 +24,16 @@ Every push to `main` deploys. Preview deploys are created per branch.
 | `radio.html` | 24/7 streams |
 | `licensing.html` | Sync / B2B licensing |
 | `journal/` | SEO content |
-| `shop.html` | Home goods and merch |
+| `shop.html` | Own-brand shop index, CSS-only category filter |
+| `shop/` | One page per catalogue product, Product JSON-LD |
 | `tools/revenue-model.html` | Internal, noindex |
 | `assets/` | Shared CSS and JS, immutably cached |
+
+Shop copy, prices, categories and tint pairs all come from
+`../shop/catalogue.json`, which the iOS app reads too. There is no generator in
+this repo by design — but change a product there and the matching
+`shop/<id>.html` and its card in `shop.html` have to be changed to match, or the
+site and the app drift apart.
 
 ## Editing
 
@@ -55,5 +62,8 @@ site ranks for — `_redirects` already handles the old `/discography` and
       `form[data-capture]`. Until then addresses are held in `localStorage` and
       the visitor is told so.
 - [ ] Replace the three placeholder stream URLs in `radio.html` and `index.html`.
-- [ ] Replace `example.com` partner links in `shop.html`.
+- [ ] Wire a checkout provider. Every buy action is `href="#"` with a
+      `data-buy="<product-id>"`; a Shopify Buy Button or Stripe Payment Link
+      replaces the href. Then flip `availability` in each product page's
+      JSON-LD from `PreOrder` to `InStock`.
 - [ ] Set the canonical domain in every `<link rel="canonical">` and `sitemap.xml`.
