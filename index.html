@@ -10,7 +10,7 @@
 <meta property="og:description" content="Generate original ambient music, cleared to use. Trained on 5,500 of our own recordings.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.tranquilsoulmusic.com/">
-<meta property="og:image" content="https://www.tranquilsoulmusic.com/assets/og.png">
+<meta property="og:image" content="https://www.tranquilsoulmusic.com/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"MusicGroup","name":"Tranquil Soul",
 "url":"https://www.tranquilsoulmusic.com/","genre":["Ambient","Meditation","Lo-fi"],
@@ -30,7 +31,7 @@
 
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="/">Tranquil Soul</a>
+    <a class="brand" href="/"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="11"/><circle cx="12" cy="12" r="7.4"/><circle class="core" cx="12" cy="12" r="3.4"/></svg>Tranquil Soul</a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">☰</button>
     <nav class="nav-links" id="nav-links">
       <a href="/" aria-current="page">Home</a>
@@ -47,6 +48,19 @@
 <main id="main">
 
 <section class="hero">
+  <!-- Same figure as the share card, so the page and its link preview read as
+       one object. Decorative: hidden from assistive tech. -->
+  <div class="hero-figure" aria-hidden="true">
+    <svg viewBox="0 0 400 400" focusable="false">
+      <circle cx="200" cy="200" r="26"/><circle cx="200" cy="200" r="42"/>
+      <circle cx="200" cy="200" r="60"/><circle cx="200" cy="200" r="80"/>
+      <circle cx="200" cy="200" r="102"/><circle cx="200" cy="200" r="126"/>
+      <circle cx="200" cy="200" r="152"/><circle cx="200" cy="200" r="180"/>
+      <circle class="ping" cx="200" cy="200" r="26"/>
+      <circle class="ping" cx="200" cy="200" r="26"/>
+      <circle class="core" cx="200" cy="200" r="14"/>
+    </svg>
+  </div>
   <div class="wrap">
     <p class="eyebrow">Tranquil Soul Music</p>
     <h1>Make your own<br>chillout music.</h1>
@@ -69,13 +83,13 @@
      reason to give you an email address. -->
 <section id="listen">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="eyebrow">Live now</p>
       <h2>Put something on.</h2>
       <p>Three continuous streams. No account, no app, nothing to close.</p>
     </div>
 
-    <div class="player">
+    <div class="player reveal">
       <button class="play-btn" id="radio-play" aria-label="Play radio">▶</button>
       <div class="player-meta">
         <div class="name" id="radio-name">Deep Space</div>
@@ -88,7 +102,7 @@
       <audio id="radio-audio" preload="none"></audio>
     </div>
 
-    <div class="station-list">
+    <div class="station-list reveal">
       <button class="station" data-name="Deep Space" data-src="https://streams.tranquilsoulmusic.com/deepspace.mp3">
         <span class="dot"></span>
         <span>Deep Space<small>Slow, dark and wide. For sleep and long work.</small></span>
@@ -107,7 +121,7 @@
 
 <section class="tight">
   <div class="wrap">
-    <div class="card capture">
+    <div class="card capture reveal">
       <p class="eyebrow">The Sunday send</p>
       <h3 style="font-size:1.7rem">One piece of music, one thing worth reading.</h3>
       <p style="margin-bottom:0">Every Sunday morning. An unreleased track and a short note on sleep, attention or recovery. No noise, unsubscribe in one click.</p>
@@ -128,21 +142,21 @@
 
 <section>
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="eyebrow">LORNA</p>
       <h2>Trained on our own catalogue.<br>Nobody else's.</h2>
       <p>LORNA is the model behind Tranquilicy, trained end to end on 5,500 recordings we wrote and own. No scraped datasets, no borrowed style, no rights holder who might object later &mdash; which is why what it makes can be cleared for you to use commercially.</p>
     </div>
     <div class="grid grid-3">
-      <div class="card">
+      <div class="card reveal">
         <h3>Say what it's for</h3>
         <p>Sleep, focus, the gym, the sauna. Six dials shape the rest &mdash; atmosphere, tempo, warmth, bass, melody, rhythm.</p>
       </div>
-      <div class="card">
+      <div class="card reveal">
         <h3>It renders, you keep it</h3>
         <p>Every piece is new and saved to your library. On the Creator plan it comes with a licence to use in your own videos and client work.</p>
       </div>
-      <div class="card">
+      <div class="card reveal">
         <h3>Clean provenance</h3>
         <p>One writer, one publisher, no samples, no scraping. That is the whole reason we can offer a licence at all.</p>
       </div>
@@ -158,22 +172,22 @@
 
 <section>
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="eyebrow">Journal</p>
       <h2>Notes on rest and attention.</h2>
     </div>
     <div class="post-list">
-      <a class="post-item" href="/journal/why-ambient-music-helps-you-sleep.html">
+      <a class="post-item reveal" href="/journal/why-ambient-music-helps-you-sleep.html">
         <time datetime="2026-09-01">1 September 2026</time>
         <h3>Why ambient music helps you fall asleep</h3>
         <p>What the sleep research actually shows about music at night — and what to look for in a track.</p>
       </a>
-      <a class="post-item" href="/journal/music-for-deep-work.html">
+      <a class="post-item reveal" href="/journal/music-for-deep-work.html">
         <time datetime="2026-08-24">24 August 2026</time>
         <h3>The right music for deep work</h3>
         <p>Why lyrics cost you more than volume does, and how to pick something that stays out of the way.</p>
       </a>
-      <a class="post-item" href="/journal/sauna-and-sound.html">
+      <a class="post-item reveal" href="/journal/sauna-and-sound.html">
         <time datetime="2026-08-17">17 August 2026</time>
         <h3>Sauna and sound: building a heat ritual</h3>
         <p>Löyly, breath and a fifteen-minute soundtrack — how to structure a session.</p>

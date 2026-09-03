@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://www.tranquilsoulmusic.com/radio.html">
 <meta property="og:title" content="24/7 ambient radio — Tranquil Soul">
 <meta property="og:description" content="Three continuous ambient streams for sleep, focus and the end of the day. Free, no account needed.">
-<meta property="og:image" content="https://www.tranquilsoulmusic.com/assets/og.png">
+<meta property="og:image" content="https://www.tranquilsoulmusic.com/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -17,12 +17,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="/">Tranquil Soul</a>
+    <a class="brand" href="/"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="11"/><circle cx="12" cy="12" r="7.4"/><circle class="core" cx="12" cy="12" r="3.4"/></svg>Tranquil Soul</a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">&#9776;</button>
     <nav class="nav-links" id="nav-links">
       <a href="/">Home</a>
@@ -43,7 +44,7 @@
   <p class="lede">Three continuous streams. Free, no account, nothing to install.</p>
 </div></section>
 <section style="padding-top:0"><div class="wrap">
-  <div class="player">
+  <div class="player reveal">
     <button class="play-btn" id="radio-play" aria-label="Play radio">&#9654;</button>
     <div class="player-meta">
       <div class="name" id="radio-name">Deep Space</div>
@@ -53,7 +54,7 @@
       <input class="vol" id="radio-vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume"></label>
     <audio id="radio-audio" preload="none"></audio>
   </div>
-  <div class="station-list">
+  <div class="station-list reveal">
     <button class="station" data-name="Deep Space" data-src="https://streams.tranquilsoulmusic.com/deepspace.mp3">
       <span class="dot"></span><span>Deep Space<small>Slow, dark and wide. For sleep and long work.</small></span></button>
     <button class="station" data-name="Golden Hour" data-src="https://streams.tranquilsoulmusic.com/goldenhour.mp3">
@@ -63,7 +64,7 @@
   </div>
   <p class="form-note" style="margin-top:20px">Streams keep playing while you use other tabs. On iPhone, the app plays with the screen locked.</p>
 </div></section>
-<section class="tight"><div class="wrap"><div class="card capture">
+<section class="tight"><div class="wrap"><div class="card capture reveal">
   <p class="eyebrow">The Sunday send</p>
   <h3 style="font-size:1.6rem">One piece of music, one thing worth reading.</h3>
   <p style="margin-bottom:0">Every Sunday morning. An unreleased track and a short note on sleep, attention or recovery.</p>

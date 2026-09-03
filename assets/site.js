@@ -6,7 +6,21 @@
 (function () {
   "use strict";
 
+  var motionOK = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   /* ---------- Nav ---------- */
+  var header = document.querySelector("header.nav");
+  if (header) {
+    // The nav is undecorated over the hero and only grows a rule and a darker
+    // ground once there is content sliding under it.
+    var syncScrolled = function () {
+      if (window.scrollY > 8) header.setAttribute("data-scrolled", "");
+      else header.removeAttribute("data-scrolled");
+    };
+    syncScrolled();
+    window.addEventListener("scroll", syncScrolled, { passive: true });
+  }
+
   var toggle = document.querySelector(".nav-toggle");
   var links = document.getElementById("nav-links");
   if (toggle && links) {
@@ -32,10 +46,15 @@
     var stations = Array.prototype.slice.call(document.querySelectorAll(".station"));
     var current = null;
 
+    var player = audio.closest(".player");
+
     var setState = function (text) { if (stateEl) stateEl.textContent = text; };
     var setIcon = function (playing) {
       if (playBtn) playBtn.textContent = playing ? "❚❚" : "▶";
       if (playBtn) playBtn.setAttribute("aria-label", playing ? "Pause radio" : "Play radio");
+      // Drives the halo and the live dot. Purely decorative — the state text
+      // is what actually reports whether audio is running.
+      if (player) player.classList.toggle("is-playing", playing);
     };
 
     var select = function (btn, autoplay) {
@@ -126,4 +145,35 @@
   document.querySelectorAll("[data-year]").forEach(function (el) {
     el.textContent = String(new Date().getFullYear());
   });
+
+  /* ---------- Scroll reveal ----------
+     The hidden state lives in CSS behind html.js, so a visitor without
+     JavaScript never sees a blank page; this only ever adds .is-in. The
+     selector must stay in step with the reveal block in style.css. */
+  var REVEAL = ".reveal, .hero .wrap > *";
+  var targets = Array.prototype.slice.call(document.querySelectorAll(REVEAL));
+
+  if (!motionOK || !("IntersectionObserver" in window)) {
+    targets.forEach(function (el) { el.classList.add("is-in"); });
+  } else {
+    // Stagger by position among revealed siblings so a section assembles
+    // itself rather than appearing all at once. Capped, so a long grid never
+    // leaves the last card hanging.
+    var seen = new Map();
+    targets.forEach(function (el) {
+      var n = seen.get(el.parentNode) || 0;
+      seen.set(el.parentNode, n + 1);
+      el.style.setProperty("--d", Math.min(n * 0.06, 0.42) + "s");
+    });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("is-in");
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.01 });
+
+    targets.forEach(function (el) { io.observe(el); });
+  }
 })();
