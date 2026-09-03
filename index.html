@@ -1,239 +1,72 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tranquil Soul Music — Make your own chillout music</title>
-<meta name="description" content="Generate original ambient music with Tranquilicy, trained on 5,500 of our own recordings. Cleared for commercial use. Plus 24/7 radio and a home goods shop.">
-<link rel="canonical" href="https://www.tranquilsoulmusic.com/">
-<meta property="og:title" content="Tranquil Soul Music — Make your own chillout music">
-<meta property="og:description" content="Generate original ambient music, cleared to use. Trained on 5,500 of our own recordings.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.tranquilsoulmusic.com/">
-<meta property="og:image" content="https://www.tranquilsoulmusic.com/assets/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#0b0a09">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css">
-<script>document.documentElement.classList.add("js")</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"MusicGroup","name":"Tranquil Soul",
-"url":"https://www.tranquilsoulmusic.com/","genre":["Ambient","Meditation","Lo-fi"],
-"description":"Ambient and meditation music for sleep, focus and recovery."}
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tranquilicy - Neural Player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+    <div class="app-wrapper">
+        <header class="top-nav">
+            <h1 class="logo">Tranquilicy <span>NEURAL GENERATOR</span></h1>
+        </header>
 
-<header class="nav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="/"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="11"/><circle cx="12" cy="12" r="7.4"/><circle class="core" cx="12" cy="12" r="3.4"/></svg>Tranquil Soul</a>
-    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">☰</button>
-    <nav class="nav-links" id="nav-links">
-      <a href="/" aria-current="page">Home</a>
-      <a href="/radio.html">Radio</a>
-      <a href="/app.html">App</a>
-      <a href="/journal.html">Journal</a>
-      <a href="/creators.html">Creators</a>
-      <a href="/licensing.html">Licensing</a>
-      <a href="/shop.html">Shop</a>
-    </nav>
-  </div>
-</header>
+        <main class="player-container">
+            <div class="record-wrapper">
+                <div class="record-plate">
+                    <div class="record-center"></div>
+                </div>
+            </div>
 
-<main id="main">
+            <div class="track-details">
+                <h2 id="trackTitle" class="track-title">Ambient Serenity</h2>
+                <p id="trackNetwork" class="track-subtitle">Neural Generation: Model 5500</p>
+            </div>
 
-<section class="hero">
-  <!-- Same figure as the share card, so the page and its link preview read as
-       one object. Decorative: hidden from assistive tech. -->
-  <div class="hero-figure" aria-hidden="true">
-    <svg viewBox="0 0 400 400" focusable="false">
-      <circle cx="200" cy="200" r="26"/><circle cx="200" cy="200" r="42"/>
-      <circle cx="200" cy="200" r="60"/><circle cx="200" cy="200" r="80"/>
-      <circle cx="200" cy="200" r="102"/><circle cx="200" cy="200" r="126"/>
-      <circle cx="200" cy="200" r="152"/><circle cx="200" cy="200" r="180"/>
-      <circle class="ping" cx="200" cy="200" r="26"/>
-      <circle class="ping" cx="200" cy="200" r="26"/>
-      <circle class="core" cx="200" cy="200" r="14"/>
-    </svg>
-  </div>
-  <div class="wrap">
-    <p class="eyebrow">Tranquil Soul Music</p>
-    <h1>Make your own<br>chillout music.</h1>
-    <p class="lede">Tranquilicy generates original ambient music on demand &mdash; trained on 5,500 of our own recordings. Yours to keep, and cleared to use.</p>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="/app.html">Get Tranquilicy</a>
-      <a class="btn btn-ghost" href="#listen">▶ Listen free first</a>
+            <div class="controls-wrapper">
+                <div class="progress-area">
+                    <span id="currentTime" class="time">0:00</span>
+                    <div class="progress-bar-bg" id="progressBarBg">
+                        <div class="progress-bar-fill" id="progressBarFill"></div>
+                    </div>
+                    <span id="totalTime" class="time">4:20</span>
+                </div>
+
+                <div class="buttons">
+                    <button id="prevBtn" class="btn secondary-btn" aria-label="Previous">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
+                    </button>
+                    <button id="playBtn" class="btn primary-btn" aria-label="Play/Pause">
+                        <span class="play-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </span>
+                    </button>
+                    <button id="nextBtn" class="btn secondary-btn" aria-label="Next">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
+                    </button>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="queue-container">
+            <p class="queue-title">Up Next</p>
+            <ul class="queue-list" id="queueList">
+                <li class="queue-item active">
+                    <span class="q-title">Ambient Serenity</span>
+                </li>
+                <li class="queue-item">
+                    <span class="q-title">Golden Hour Drift</span>
+                </li>
+                <li class="queue-item">
+                    <span class="q-title">Kyoto Rain</span>
+                </li>
+            </ul>
+        </footer>
     </div>
-    <div class="proof">
-      <div><strong>21M+</strong><span>Creator uses</span></div>
-      <div><strong>5,500</strong><span>Tracks trained on</span></div>
-      <div><strong>24/7</strong><span>Live radio</span></div>
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
-
-<!-- Listening happens before any ask. Someone who has heard nothing has no
-     reason to give you an email address. -->
-<section id="listen">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">Live now</p>
-      <h2>Put something on.</h2>
-      <p>Three continuous streams. No account, no app, nothing to close.</p>
-    </div>
-
-    <div class="player reveal">
-      <button class="play-btn" id="radio-play" aria-label="Play radio">▶</button>
-      <div class="player-meta">
-        <div class="name" id="radio-name">Deep Space</div>
-        <div class="state" id="radio-state">Ready</div>
-      </div>
-      <label class="vol-wrap">
-        <span class="skip">Volume</span>
-        <input class="vol" id="radio-vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
-      </label>
-      <audio id="radio-audio" preload="none"></audio>
-    </div>
-
-    <div class="station-list reveal">
-      <button class="station" data-name="Deep Space" data-src="https://streams.tranquilsoulmusic.com/deepspace.mp3">
-        <span class="dot"></span>
-        <span>Deep Space<small>Slow, dark and wide. For sleep and long work.</small></span>
-      </button>
-      <button class="station" data-name="Golden Hour" data-src="https://streams.tranquilsoulmusic.com/goldenhour.mp3">
-        <span class="dot"></span>
-        <span>Golden Hour<small>Warm and unhurried. For the end of the day.</small></span>
-      </button>
-      <button class="station" data-name="Still Water" data-src="https://streams.tranquilsoulmusic.com/stillwater.mp3">
-        <span class="dot"></span>
-        <span>Still Water<small>Dry and articulate. Stays out of the way.</small></span>
-      </button>
-    </div>
-  </div>
-</section>
-
-<section class="tight">
-  <div class="wrap">
-    <div class="card capture reveal">
-      <p class="eyebrow">The Sunday send</p>
-      <h3 style="font-size:1.7rem">One piece of music, one thing worth reading.</h3>
-      <p style="margin-bottom:0">Every Sunday morning. An unreleased track and a short note on sleep, attention or recovery. No noise, unsubscribe in one click.</p>
-      <form data-capture="home-hero" data-endpoint="https://lorna-api.tranquilsoul.workers.dev/v1/subscribe">
-        <div class="form-row">
-          <label class="skip" for="email-home">Email address</label>
-          <input id="email-home" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
-          <button class="btn btn-primary" type="submit">Join free</button>
-        </div>
-        <p class="form-status" role="status"></p>
-        <p class="form-note">Free forever. We never sell your address.</p>
-      </form>
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
-
-<section>
-  <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">LORNA</p>
-      <h2>Trained on our own catalogue.<br>Nobody else's.</h2>
-      <p>LORNA is the model behind Tranquilicy, trained end to end on 5,500 recordings we wrote and own. No scraped datasets, no borrowed style, no rights holder who might object later &mdash; which is why what it makes can be cleared for you to use commercially.</p>
-    </div>
-    <div class="grid grid-3">
-      <div class="card reveal">
-        <h3>Say what it's for</h3>
-        <p>Sleep, focus, the gym, the sauna. Six dials shape the rest &mdash; atmosphere, tempo, warmth, bass, melody, rhythm.</p>
-      </div>
-      <div class="card reveal">
-        <h3>It renders, you keep it</h3>
-        <p>Every piece is new and saved to your library. On the Creator plan it comes with a licence to use in your own videos and client work.</p>
-      </div>
-      <div class="card reveal">
-        <h3>Clean provenance</h3>
-        <p>One writer, one publisher, no samples, no scraping. That is the whole reason we can offer a licence at all.</p>
-      </div>
-    </div>
-    <div class="hero-actions">
-      <a class="btn btn-primary" href="/app.html">See Tranquilicy</a>
-      <a class="btn btn-ghost" href="/creators.html">For creators</a>
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
-
-<section>
-  <div class="wrap">
-    <div class="section-head reveal">
-      <p class="eyebrow">Journal</p>
-      <h2>Notes on rest and attention.</h2>
-    </div>
-    <div class="post-list">
-      <a class="post-item reveal" href="/journal/why-ambient-music-helps-you-sleep.html">
-        <time datetime="2026-09-01">1 September 2026</time>
-        <h3>Why ambient music helps you fall asleep</h3>
-        <p>What the sleep research actually shows about music at night — and what to look for in a track.</p>
-      </a>
-      <a class="post-item reveal" href="/journal/music-for-deep-work.html">
-        <time datetime="2026-08-24">24 August 2026</time>
-        <h3>The right music for deep work</h3>
-        <p>Why lyrics cost you more than volume does, and how to pick something that stays out of the way.</p>
-      </a>
-      <a class="post-item reveal" href="/journal/sauna-and-sound.html">
-        <time datetime="2026-08-17">17 August 2026</time>
-        <h3>Sauna and sound: building a heat ritual</h3>
-        <p>Löyly, breath and a fifteen-minute soundtrack — how to structure a session.</p>
-      </a>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer class="site">
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <h4>Listen</h4>
-        <a href="/radio.html">24/7 Radio</a>
-        <a href="https://open.spotify.com/" rel="noopener">Spotify</a>
-        <a href="https://www.youtube.com/" rel="noopener">YouTube</a>
-        <a href="https://soundcloud.com/" rel="noopener">SoundCloud</a>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <a href="/app.html">The app</a>
-        <a href="/journal.html">Journal</a>
-        <a href="/shop.html">Shop</a>
-      </div>
-      <div>
-        <h4>Business</h4>
-        <a href="/creators.html">For creators</a>
-        <a href="/licensing.html">Sync licensing</a>
-        <a href="mailto:relax@tranquilsoulmusic.com">relax@tranquilsoulmusic.com</a>
-      </div>
-      <div>
-        <h4>Elsewhere</h4>
-        <a href="https://www.tranquilsleepmusic.com/" rel="noopener">Tranquil Sleep Music</a>
-        <a href="https://www.sub-liminal.com/" rel="noopener">Sub-Liminal</a>
-      </div>
-    </div>
-    <div class="foot-legal">
-      <span>&copy; <span data-year></span> Tranquil Soul Music</span>
-      <span><a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a></span>
-    </div>
-  </div>
-</footer>
-
-<script src="/assets/site.js"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "REPLACE_WITH_CLOUDFLARE_ANALYTICS_TOKEN"}'></script>
+    <script src="main.js"></script>
 </body>
 </html>
