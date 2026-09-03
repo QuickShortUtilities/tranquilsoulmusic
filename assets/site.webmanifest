@@ -1,0 +1,16 @@
+{
+  "name": "Tranquil Soul Music",
+  "short_name": "Tranquil Soul",
+  "description": "Calming, ambient and soulful music for sleep, focus, meditation and the sauna.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#090807",
+  "theme_color": "#090807",
+  "lang": "en-GB",
+  "icons": [
+    { "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
