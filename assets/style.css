@@ -113,7 +113,7 @@ h1, h2, h3 {
   text-wrap: balance;
   letter-spacing: .01em;
 }
-h1 { font-size: clamp(2.8rem, 6vw, 4.8rem); }
+h1 { font-size: clamp(3rem, 6.5vw, 5.4rem); }
 h2 { font-size: clamp(2rem, 3.6vw, 3rem); }
 h3 { font-size: clamp(1.25rem, 2vw, 1.4rem); line-height: 1.22; }
 p  { margin: 0 0 1em; color: var(--text-2); text-wrap: pretty; }
@@ -392,7 +392,20 @@ header.nav[data-scrolled] {
 .grid { display: grid; gap: clamp(14px, 1.8vw, 22px); }
 .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 .grid-3 { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
-.grid-products { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: clamp(14px, 1.6vw, 20px); }
+.grid-products { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: clamp(16px, 1.8vw, 24px); }
+
+/* Staggered reveal delay for product grid */
+@media (prefers-reduced-motion: no-preference) {
+  .grid-products > :nth-child(1)  { --d: 0s; }
+  .grid-products > :nth-child(2)  { --d: .08s; }
+  .grid-products > :nth-child(3)  { --d: .16s; }
+  .grid-products > :nth-child(4)  { --d: .24s; }
+  .grid-products > :nth-child(5)  { --d: .32s; }
+  .grid-products > :nth-child(6)  { --d: .4s; }
+  .grid-products > :nth-child(7)  { --d: .48s; }
+  .grid-products > :nth-child(8)  { --d: .56s; }
+  .grid-products > :nth-child(n+9){ --d: .64s; }
+}
 
 section { padding: clamp(72px, 9vw, 112px) 0; position: relative; z-index: 1; }
 section.tight { padding: clamp(48px, 5.5vw, 68px) 0; }
@@ -650,29 +663,55 @@ hr.rule {
 
 .capture {
   background:
-    linear-gradient(160deg, rgba(193,166,115,.09), rgba(193,166,115,.025)),
-    radial-gradient(60% 110% at 50% -10%, rgba(193,166,115,.09), transparent 72%);
-  border-color: rgba(193,166,115,.2);
+    linear-gradient(155deg,
+      rgba(193,166,115,.13) 0%,
+      rgba(193,166,115,.04) 40%,
+      rgba(193,166,115,.07) 100%),
+    radial-gradient(70% 120% at 50% -10%, rgba(193,166,115,.12), transparent 68%),
+    radial-gradient(50% 80% at 0% 100%, rgba(100,80,40,.08), transparent 60%);
+  border-color: rgba(193,166,115,.25);
+  box-shadow:
+    var(--lift),
+    0 0 0 1px rgba(193,166,115,.08),
+    inset 0 1px 0 rgba(255,255,255,.08);
 }
 @supports (mask-composite: exclude) or (-webkit-mask-composite: xor) {
-  .capture::after { background: linear-gradient(160deg, rgba(193,166,115,.38), rgba(193,166,115,.07)); }
+  .capture::after {
+    background: linear-gradient(155deg,
+      rgba(193,166,115,.5) 0%,
+      rgba(193,166,115,.12) 50%,
+      rgba(255,255,255,.04) 100%);
+  }
 }
 
-.form-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
+.capture h3 {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  line-height: 1.15;
+}
+
+.form-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; }
 .form-row input[type=email] {
   flex: 1 1 220px; min-width: 0;
-  padding: 14px 18px;
+  padding: 15px 20px;
   border-radius: var(--radius-sm);
-  background: rgba(255,255,255,.05);
+  background: rgba(255,255,255,.055);
   border: 1px solid var(--line-hi);
   color: var(--text);
   font-family: var(--ui); font-size: .9rem;
-  transition: border-color .3s var(--ease), background .3s var(--ease);
+  transition: border-color .32s var(--ease), background .32s var(--ease), box-shadow .32s var(--ease);
 }
 .form-row input[type=email]::placeholder { color: var(--text-3); }
-.form-row input[type=email]:hover { border-color: rgba(193,166,115,.28); }
-.form-row input[type=email]:focus-visible { border-color: rgba(193,166,115,.55); background: rgba(255,255,255,.07); outline: none; }
-.form-note { font-size: .75rem; color: var(--text-3); margin-top: 10px; }
+.form-row input[type=email]:hover {
+  border-color: rgba(193,166,115,.32);
+  background: rgba(255,255,255,.065);
+}
+.form-row input[type=email]:focus-visible {
+  border-color: rgba(193,166,115,.6);
+  background: rgba(255,255,255,.08);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(193,166,115,.1);
+}
+.form-note { font-size: .74rem; color: var(--text-3); margin-top: 12px; line-height: 1.55; }
 .form-status { font-size: .82rem; color: var(--gold-text); margin-top: 10px; min-height: 1.2em; }
 
 /* ─── Shop ───────────────────────────────────────────────── */
@@ -687,34 +726,47 @@ hr.rule {
   flex-wrap: wrap;
   gap: 4px;
   margin-bottom: clamp(28px, 3.6vw, 44px);
+  position: relative;
 }
 .filters a {
   position: relative;
-  padding: 8px 16px;
+  padding: 9px 18px;
   color: var(--text-3);
   text-decoration: none;
-  font-size: .68rem;
-  letter-spacing: .18em;
+  font-size: .66rem;
+  letter-spacing: .2em;
   text-transform: uppercase;
   font-weight: 600;
-  border-radius: 40px;
+  border-radius: 100px;
   border: 1px solid transparent;
-  transition: color .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease);
+  transition: color .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease);
 }
-.filters a:hover { color: var(--text-2); text-decoration: none; background: rgba(255,255,255,.04); border-color: var(--line); }
-.filters .n { margin-left: .45em; opacity: .55; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
+.filters a:hover { color: var(--text-2); text-decoration: none; background: rgba(255,255,255,.045); border-color: var(--line); }
+.filters .n {
+  margin-left: .45em; opacity: .5;
+  letter-spacing: .04em; font-variant-numeric: tabular-nums;
+  font-size: .9em;
+}
 
 /* Active filter */
-.filters a[href="#all"] { color: var(--gold-text); background: rgba(193,166,115,.08); border-color: rgba(193,166,115,.3); }
+.filters a[href="#all"] {
+  color: var(--gold-text);
+  background: rgba(193,166,115,.1);
+  border-color: rgba(193,166,115,.35);
+  box-shadow: 0 0 0 3px rgba(193,166,115,.05), inset 0 1px 0 rgba(255,255,255,.06);
+}
 :is(#scent,#home,#recovery,#wear,#sound):target ~ .shop-index .filters a[href="#all"] {
-  color: var(--text-3); background: transparent; border-color: transparent;
+  color: var(--text-3); background: transparent; border-color: transparent; box-shadow: none;
 }
 #scent:target    ~ .shop-index .filters a[href="#scent"],
 #home:target     ~ .shop-index .filters a[href="#home"],
 #recovery:target ~ .shop-index .filters a[href="#recovery"],
 #wear:target     ~ .shop-index .filters a[href="#wear"],
 #sound:target    ~ .shop-index .filters a[href="#sound"] {
-  color: var(--gold-text); background: rgba(193,166,115,.08); border-color: rgba(193,166,115,.3);
+  color: var(--gold-text);
+  background: rgba(193,166,115,.1);
+  border-color: rgba(193,166,115,.35);
+  box-shadow: 0 0 0 3px rgba(193,166,115,.05), inset 0 1px 0 rgba(255,255,255,.06);
 }
 
 #scent:target    ~ .shop-index .grid-products > :not([data-cat="scent"]),
@@ -734,12 +786,19 @@ hr.rule {
   border: 1px solid var(--line);
   background: var(--bg-3);
   box-shadow: var(--lift);
-  transition: transform .38s var(--ease-out), box-shadow .38s var(--ease), border-color .3s var(--ease);
+  transition:
+    transform .4s var(--ease-out),
+    box-shadow .4s var(--ease),
+    border-color .32s var(--ease);
 }
 .product:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--lift-hi);
-  border-color: rgba(193,166,115,.2);
+  transform: translateY(-6px);
+  box-shadow:
+    0 2px 4px rgba(0,0,0,.4),
+    0 12px 28px rgba(0,0,0,.55),
+    0 32px 64px rgba(0,0,0,.45),
+    0 0 0 1px rgba(193,166,115,.22);
+  border-color: rgba(193,166,115,.28);
   text-decoration: none;
 }
 
@@ -751,12 +810,10 @@ hr.rule {
   place-items: center;
   overflow: hidden;
   background:
-    /* Top warm light source */
-    radial-gradient(110% 70% at 50% 0%, hsl(var(--tint, 34 28% 42%) / .55), transparent 62%),
-    /* Mid tint wash */
-    radial-gradient(80% 80% at 30% 110%, hsl(var(--tint-2, 26 20% 9%) / .8), transparent 68%),
-    /* Dark base */
+    radial-gradient(110% 70% at 50% 0%,  hsl(var(--tint, 34 28% 42%) / .55), transparent 62%),
+    radial-gradient(80%  80% at 30% 110%, hsl(var(--tint-2, 26 20% 9%) / .8), transparent 68%),
     linear-gradient(160deg, #1C1813 0%, #0C0A08 100%);
+  transition: background .4s var(--ease);
 }
 /* Shelf line */
 .thumb::before {
@@ -765,6 +822,7 @@ hr.rule {
   left: 10%; right: 10%; bottom: 18%;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(193,166,115,.45), transparent);
+  transition: opacity .4s var(--ease);
 }
 /* Shadow under the object */
 .thumb::after {
@@ -775,11 +833,67 @@ hr.rule {
   background: radial-gradient(62% 100% at 50% 0%, rgba(0,0,0,.65), transparent 76%);
 }
 
+/* Quick-view overlay on hover */
+.thumb-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 20px;
+  background: linear-gradient(to top, rgba(0,0,0,.6) 0%, transparent 55%);
+  opacity: 0;
+  transition: opacity .35s var(--ease);
+  pointer-events: none;
+}
+.thumb-overlay span {
+  font-family: var(--ui);
+  font-size: .64rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.9);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: rgba(193,166,115,.18);
+  border: 1px solid rgba(193,166,115,.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform: translateY(6px);
+  transition: transform .38s var(--ease-out), background .28s var(--ease);
+}
+.thumb-overlay span::after {
+  content: '→';
+  font-size: .8em;
+}
+.product:hover .thumb-overlay { opacity: 1; }
+.product:hover .thumb-overlay span { transform: translateY(0); }
+
+/* Shimmer sweep on hover */
+.thumb::before { z-index: 1; }
+.product::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255,255,255,.055) 50%,
+    transparent 80%
+  );
+  z-index: 2; pointer-events: none;
+  transition: left .55s var(--ease-out);
+}
+.product:hover::before { left: 160%; }
+
 /* Hover: lift thumb background glow */
 .product:hover .thumb {
   background:
-    radial-gradient(110% 70% at 50% 0%, hsl(var(--tint, 34 28% 42%) / .72), transparent 62%),
-    radial-gradient(80% 80% at 30% 110%, hsl(var(--tint-2, 26 20% 9%) / .8), transparent 68%),
+    radial-gradient(110% 70% at 50% 0%,  hsl(var(--tint, 34 28% 42%) / .78), transparent 62%),
+    radial-gradient(80%  80% at 30% 110%, hsl(var(--tint-2, 26 20% 9%) / .8), transparent 68%),
     linear-gradient(160deg, #1C1813 0%, #0C0A08 100%);
 }
 
@@ -796,34 +910,46 @@ hr.rule {
   stroke-linejoin: round;
   opacity: .82;
   overflow: visible;
-  filter: drop-shadow(0 4px 18px rgba(0,0,0,.7)) drop-shadow(0 0 8px rgba(193,166,115,.16));
-  transition: transform .5s var(--ease-out), opacity .4s var(--ease), filter .4s var(--ease);
+  filter:
+    drop-shadow(0 4px 18px rgba(0,0,0,.7))
+    drop-shadow(0 0 8px rgba(193,166,115,.16));
+  transition:
+    transform .5s var(--ease-out),
+    opacity .4s var(--ease),
+    filter .45s var(--ease);
+  z-index: 1;
 }
 .product:hover .figure {
-  transform: translateY(-7px) scale(1.04);
+  transform: translateY(-10px) scale(1.05);
   opacity: 1;
-  filter: drop-shadow(0 6px 22px rgba(0,0,0,.7)) drop-shadow(0 0 14px rgba(193,166,115,.3));
+  filter:
+    drop-shadow(0 8px 28px rgba(0,0,0,.65))
+    drop-shadow(0 0 20px rgba(193,166,115,.38));
 }
 .figure .fillet { fill: currentColor; stroke: none; opacity: .5; }
 
 /* Card body */
 .product .body {
   border-top: 1px solid rgba(255,255,255,.055);
-  padding: 22px 24px 26px;
+  padding: 20px 22px 24px;
   display: flex;
   flex-direction: column;
   flex: 1;
   background: linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+  transition: background .3s var(--ease);
+}
+.product:hover .body {
+  background: linear-gradient(180deg, rgba(193,166,115,.04), transparent);
 }
 .product .kicker {
-  font-size: .58rem;
-  letter-spacing: .24em;
+  font-size: .57rem;
+  letter-spacing: .26em;
   text-transform: uppercase;
   color: var(--text-3);
-  margin-bottom: .4em;
+  margin-bottom: .45em;
 }
 .product h3 {
-  font-size: 1.2rem;
+  font-size: 1.18rem;
   margin: 0 0 .4em;
   color: var(--text);
   transition: color .28s var(--ease);
@@ -831,19 +957,42 @@ hr.rule {
 }
 .product:hover h3 { color: var(--gold-text); }
 .product .desc {
-  font-size: .8rem;
-  line-height: 1.6;
-  margin: 0 0 16px;
+  font-size: .79rem;
+  line-height: 1.65;
+  margin: 0 0 18px;
   color: var(--text-3);
   flex: 1;
 }
-.product .price {
+.product .price-row-card {
   margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.product .price {
   color: var(--gold-text);
-  font-size: .9rem;
+  font-size: .92rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   letter-spacing: .03em;
+}
+.product .price-arrow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .65rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity .3s var(--ease), transform .3s var(--ease-out), color .28s var(--ease);
+}
+.product:hover .price-arrow {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--gold-text);
 }
 
 /* Product page */
@@ -1068,4 +1217,206 @@ footer.site::before {
   left: 20px; top: 12px; z-index: 100;
   background: var(--gold); color: #fff;
   padding: 10px 18px; border-radius: var(--radius-xs);
+}
+
+/* ─── Page transitions ───────────────────────────────────── */
+/* The ground colour lives on <html> too, so the moment between one document
+   unloading and the next painting is the same near-black rather than a white
+   flash. The fade itself is opacity only — a transform on <body> would make it
+   the containing block for the fixed gold bloom. */
+
+html { background: var(--bg); }
+
+/* Both directions are animations. Cancelling the entry animation and letting a
+   transition pick up the element does NOT fade — the element has no running
+   transition to inherit from and the opacity cuts straight to 0. Swapping one
+   animation for another is a clean discrete replacement, and always runs. */
+@media (prefers-reduced-motion: no-preference) {
+  .js body { animation: page-in .38s var(--ease-out) backwards; }
+  .js.is-leaving body { animation: page-out .2s var(--ease) forwards; }
+}
+@keyframes page-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes page-out { from { opacity: 1; } to { opacity: 0; } }
+
+/* ─── Radio visualiser ───────────────────────────────────── */
+/* The stream is a cross-origin YouTube iframe, so there is no waveform to
+   read. These are breathing rings on a fixed period — decorative, and only
+   ever shown while the player reports that it is actually playing. */
+
+.radio-viz {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity .9s var(--ease);
+}
+.radio-embed iframe { position: relative; z-index: 1; }
+
+.radio-player.is-playing .radio-viz { opacity: 1; }
+
+/* Glow and rings all sit in the one grid cell, so they stay stacked on the
+   iframe's centre without any of them needing to be taken out of flow.
+   --viz-w/--viz-h are measured off the iframe by site.js; the fallbacks only
+   apply for the frame or two before the first measurement lands. */
+.radio-viz > *,
+.radio-viz::after {
+  grid-area: 1 / 1;
+  width: var(--viz-w, 100%);
+  height: var(--viz-h, 100%);
+  border-radius: var(--radius);
+}
+
+.radio-viz::after {
+  content: "";
+  background: radial-gradient(60% 70% at 50% 50%, rgba(193,166,115,.16), transparent 72%);
+  filter: blur(26px);
+}
+
+.radio-ring {
+  border: 1px solid var(--gold);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .radio-viz::after { animation: radio-breathe 7.2s var(--ease) infinite; }
+  .radio-ring { animation: radio-ripple 5.4s var(--ease-out) infinite; }
+  .radio-ring:nth-child(2) { animation-delay: 1.8s; }
+  .radio-ring:nth-child(3) { animation-delay: 3.6s; }
+  /* Nothing runs while the stream is idle. */
+  .radio-viz:not(.is-live) .radio-ring,
+  .radio-viz:not(.is-live)::after { animation-play-state: paused; }
+}
+
+@keyframes radio-ripple {
+  0%   { opacity: 0;   transform: scale(1); }
+  14%  { opacity: .45; }
+  100% { opacity: 0;   transform: scale(var(--ripple-to, 1.16)); }
+}
+@media (max-width: 700px) {
+  .radio-ring { display: none; }
+}
+
+@keyframes radio-breathe {
+  0%, 100% { opacity: .55; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.035); }
+}
+
+/* ─── Magnetic buttons ───────────────────────────────────── */
+/* Only where there is a real cursor to be drawn towards. The offset arrives
+   as --mx/--my from site.js; every transform below has to carry it, or the
+   button would snap back to centre on hover. */
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .magnetic {
+    --mx: 0px;
+    --my: 0px;
+    transform: translate3d(var(--mx), var(--my), 0);
+    transition:
+      transform .55s var(--ease-out),
+      box-shadow .25s var(--ease),
+      background-color .25s var(--ease),
+      color .25s var(--ease);
+  }
+  .magnetic:hover  { transform: translate3d(var(--mx), calc(var(--my) - 2px), 0); }
+  .magnetic:active { transform: translate3d(var(--mx), var(--my), 0) scale(.975); }
+  /* While the cursor is inside the field the button tracks it closely; the
+     slow curve above is what makes the release feel elastic. */
+  .magnetic.is-pulled { transition-duration: .13s; }
+}
+
+/* ─── Editorial (journal) ────────────────────────────────── */
+/* The base h2 is a page-title size; inside a 66ch column it has to come down
+   to something a subhead can be. Everything else here is magazine furniture:
+   a drop cap to open the body text, quotes that break the measure. */
+
+article.post {
+  font-size: 1.06rem;
+  line-height: 1.78;
+}
+article.post p { margin: 0 0 1.15em; }
+article.post > p:not(.lede) { color: var(--text-2); }
+article.post strong { color: var(--text); font-weight: 500; }
+
+article.post .lede {
+  max-width: none;
+  font-size: clamp(1.2rem, 2.1vw, 1.42rem);
+  line-height: 1.55;
+  color: var(--text);
+  font-family: var(--display);
+  letter-spacing: .005em;
+  margin-bottom: 1.5em;
+}
+
+article.post h2 {
+  font-size: clamp(1.6rem, 2.6vw, 2.05rem);
+  line-height: 1.18;
+  color: var(--text);
+  margin: 2em 0 .55em;
+  letter-spacing: .012em;
+}
+/* A short gold rule sits above each subhead — the only ornament in the column. */
+article.post h2::before {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 1px;
+  margin-bottom: .7em;
+  background: linear-gradient(90deg, var(--gold), rgba(193,166,115,0));
+}
+
+article.post ul { padding-left: 1.1em; }
+article.post ul li::marker { color: var(--gold); }
+article.post li { margin-bottom: .55em; }
+
+/* Drop cap — site.js tags the first body paragraph, so a new article gets one
+   without anyone remembering to add a class. */
+article.post > p.has-dropcap::first-letter {
+  float: left;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 4.6em;
+  /* 4.6em x .755 = 58.9px against a 60.4px two-line box. Anything larger,
+     padding and margin included, spills into the third line. */
+  line-height: .755;
+  padding: 0 .07em 0 0;
+  margin: 0;
+  color: var(--gold-text);
+}
+@media (max-width: 560px) {
+  article.post > p.has-dropcap::first-letter { font-size: 3.8em; }
+}
+
+/* Pull quote */
+article.post blockquote {
+  position: relative;
+  margin: clamp(2rem, 4vw, 2.9rem) 0;
+  padding: 0 0 0 clamp(30px, 5vw, 54px);
+  border-left: 0;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: clamp(1.45rem, 3vw, 1.95rem);
+  line-height: 1.34;
+  letter-spacing: .006em;
+  color: var(--text);
+  text-wrap: balance;
+}
+article.post blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: 0;
+  top: .32em;
+  font-family: var(--display);
+  font-size: 3.6em;
+  line-height: 0;
+  color: var(--gold);
+  opacity: .3;
+}
+/* Once there is genuinely room outside the measure, the quote steps into it:
+   1100px of wrap + 40px padding + the 54px pull needs ~1180px before the
+   quote mark clears the viewport edge. */
+@media (min-width: 1180px) {
+  article.post blockquote { margin-left: -54px; }
 }
