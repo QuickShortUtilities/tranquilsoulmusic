@@ -211,3 +211,251 @@
     targets.forEach(function (el) { io.observe(el); });
   }
 })();
+
+/* Tranquil Soul — polish layer.
+   Kept in its own IIFE so nothing here can break the nav, the radio or the
+   signup form above if a browser trips over it. */
+
+(function () {
+  "use strict";
+
+  var docEl = document.documentElement;
+  var motionOK = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Page transitions ----------
+     Same-origin navigations fade out before the browser unloads, and every
+     page fades in (CSS, on .js body). The ground colour is identical on both
+     sides of the swap, so what you see is a crossfade rather than a flash. */
+
+  // A page restored from the back/forward cache keeps whatever classes it had
+  // when it left — including the one that fades it to nothing.
+  window.addEventListener("pageshow", function () {
+    docEl.classList.remove("is-leaving");
+  });
+
+  if (motionOK) {
+    document.addEventListener("click", function (e) {
+      // Anything the browser would treat specially stays the browser's job:
+      // new tabs, downloads, right/middle clicks.
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+      if (!a) return;
+      if (a.target && a.target !== "_self") return;
+      if (a.hasAttribute("download")) return;
+      if (a.hasAttribute("data-no-transition")) return;
+
+      var url;
+      try { url = new URL(a.href, location.href); } catch (err) { return; }
+
+      // mailto:, tel:, and anything off-site.
+      if (url.protocol !== "http:" && url.protocol !== "https:") return;
+      if (url.origin !== location.origin) return;
+      // In-page anchor — let it scroll.
+      if (url.pathname === location.pathname && url.search === location.search) return;
+
+      e.preventDefault();
+      docEl.classList.add("is-leaving");
+
+      var gone = false;
+      var go = function () {
+        if (gone) return;
+        gone = true;
+        location.href = url.href;
+      };
+      document.body.addEventListener("animationend", function onEnd(ev) {
+        if (ev.animationName !== "page-out" || ev.target !== document.body) return;
+        document.body.removeEventListener("animationend", onEnd);
+        go();
+      });
+      // animationend never fires on a backgrounded tab.
+      setTimeout(go, 320);
+    });
+  }
+
+  /* ---------- Radio visualiser ----------
+     The stream is a cross-origin YouTube iframe: there is no waveform to read,
+     so these rings breathe on a fixed period. They are shown only while the
+     player reports state 1 (playing), which is the honest part — an idle
+     player gets nothing. */
+
+  var radioFrame = document.getElementById("radio-iframe");
+  var radioPlayer = radioFrame && radioFrame.closest ? radioFrame.closest(".radio-player") : null;
+
+  if (radioFrame && radioPlayer) {
+    var embed = radioFrame.parentNode;
+    var viz = document.createElement("div");
+    viz.className = "radio-viz";
+    viz.setAttribute("aria-hidden", "true");
+    for (var r = 0; r < 3; r++) {
+      var ring = document.createElement("span");
+      ring.className = "radio-ring";
+      viz.appendChild(ring);
+    }
+    embed.insertBefore(viz, embed.firstChild);
+
+    // The two pages size the iframe differently (640x360 and 600x340), and a
+    // guessed width leaves the rings starting INSIDE the frame — they then
+    // surface as two disembodied horizontal lines before the corners clear it.
+    // Measuring the frame is the only way a ripple starts exactly on its edge.
+    var syncViz = function () {
+      var box = radioFrame.getBoundingClientRect();
+      if (!box.width || !box.height) return;
+      viz.style.setProperty("--viz-w", box.width + "px");
+      viz.style.setProperty("--viz-h", box.height + "px");
+    };
+    syncViz();
+    radioFrame.addEventListener("load", syncViz);
+    if (window.ResizeObserver) new ResizeObserver(syncViz).observe(radioFrame);
+    else window.addEventListener("resize", syncViz);
+
+    var setPlaying = function (on) {
+      radioPlayer.classList.toggle("is-playing", on);
+      viz.classList.toggle("is-live", on);
+    };
+
+    // The iframe already carries enablejsapi=1, so a "listening" handshake is
+    // enough to be sent state changes — no need to load the YouTube API.
+    var handshake = function () {
+      try {
+        radioFrame.contentWindow.postMessage(
+          JSON.stringify({ event: "listening", id: "tsm-radio", channel: "widget" }),
+          "https://www.youtube.com"
+        );
+      } catch (err) { /* not ready yet */ }
+    };
+
+    var YT_ORIGIN = /^https:\/\/(www\.)?youtube(-nocookie)?\.com$/;
+
+    window.addEventListener("message", function (e) {
+      if (!YT_ORIGIN.test(e.origin)) return;
+      if (e.source !== radioFrame.contentWindow) return;
+
+      var data;
+      try { data = typeof e.data === "string" ? JSON.parse(e.data) : e.data; } catch (err) { return; }
+      if (!data) return;
+
+      var state = null;
+      if (data.event === "onStateChange" && typeof data.info === "number") {
+        state = data.info;
+      } else if (data.event === "infoDelivery" && data.info && typeof data.info.playerState === "number") {
+        state = data.info.playerState;
+      }
+      if (state === null) return;
+
+      setPlaying(state === 1);
+    });
+
+    // Switching station replaces the src; the new player starts silent.
+    if (window.MutationObserver) {
+      new MutationObserver(function () { setPlaying(false); })
+        .observe(radioFrame, { attributes: true, attributeFilter: ["src"] });
+    }
+
+    radioFrame.addEventListener("load", function () {
+      // The player answers a handshake only once it has booted, and there is
+      // no event for that — so ask a few times, then stop.
+      var tries = 0;
+      var t = setInterval(function () {
+        handshake();
+        if (++tries >= 8) clearInterval(t);
+      }, 350);
+    });
+  }
+
+  /* ---------- Magnetic buttons ----------
+     Buttons lean towards a cursor that comes near. Mouse only: on a
+     touchscreen there is no "near", and the pull would just be a lag. */
+
+  var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var magnets = Array.prototype.slice.call(document.querySelectorAll(".btn"));
+
+  if (finePointer && motionOK && magnets.length) {
+    var FIELD = 46;   // px of reach beyond the button's own edge
+    var PULL  = 0.28; // share of the offset the button actually travels
+    var MAX   = 10;   // px, so a big button never slides far from its slot
+
+    magnets.forEach(function (el) { el.classList.add("magnetic"); });
+
+    var rects = [];
+    var stale = true;
+    var queued = false;
+    var px = -1e4, py = -1e4;
+
+    var cap = function (v) { return Math.max(-MAX, Math.min(MAX, v)); };
+
+    var release = function (el) {
+      if (!el.classList.contains("is-pulled")) return;
+      el.classList.remove("is-pulled");
+      el.style.setProperty("--mx", "0px");
+      el.style.setProperty("--my", "0px");
+    };
+
+    var apply = function () {
+      queued = false;
+      if (stale) {
+        rects = magnets.map(function (el) { return el.getBoundingClientRect(); });
+        stale = false;
+      }
+      for (var i = 0; i < magnets.length; i++) {
+        var rect = rects[i];
+        var el = magnets[i];
+        if (!rect || !rect.width) { release(el); continue; }
+
+        var dx = px - (rect.left + rect.width / 2);
+        var dy = py - (rect.top + rect.height / 2);
+
+        if (Math.abs(dx) < rect.width / 2 + FIELD && Math.abs(dy) < rect.height / 2 + FIELD) {
+          el.classList.add("is-pulled");
+          el.style.setProperty("--mx", cap(dx * PULL).toFixed(2) + "px");
+          el.style.setProperty("--my", cap(dy * PULL).toFixed(2) + "px");
+        } else {
+          release(el);
+        }
+      }
+    };
+
+    var schedule = function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(apply);
+    };
+
+    window.addEventListener("pointermove", function (e) {
+      if (e.pointerType && e.pointerType !== "mouse") return;
+      px = e.clientX;
+      py = e.clientY;
+      schedule();
+    }, { passive: true });
+
+    // Scrolling moves the buttons under a stationary cursor, so the cached
+    // rectangles have to go.
+    var invalidate = function () { stale = true; schedule(); };
+    window.addEventListener("scroll", invalidate, { passive: true });
+    window.addEventListener("resize", invalidate);
+
+    var releaseAll = function () {
+      px = py = -1e4;
+      magnets.forEach(release);
+    };
+    window.addEventListener("blur", releaseAll);
+    document.addEventListener("mouseleave", releaseAll);
+  }
+
+  /* ---------- Drop cap ----------
+     Tagged here rather than in the markup so a new article picks one up
+     without anyone remembering the class. The lede is a standfirst, so the
+     cap belongs on the first paragraph of body text after it. */
+
+  var post = document.querySelector("article.post");
+  if (post) {
+    var paras = post.querySelectorAll(":scope > p");
+    for (var p = 0; p < paras.length; p++) {
+      if (paras[p].classList.contains("lede")) continue;
+      if (!paras[p].textContent.trim()) continue;
+      paras[p].classList.add("has-dropcap");
+      break;
+    }
+  }
+})();

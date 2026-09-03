@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tranquil Soul — Journal</title>
+    <link>https://www.tranquilsoulmusic.com/journal.html</link>
+    <description>Notes on sleep, attention and recovery, from the people making the music.</description>
+    <language>en-GB</language>
+    <lastBuildDate>Tue, 01 Sep 2026 09:00:00 +0000</lastBuildDate>
+    <atom:link href="https://www.tranquilsoulmusic.com/journal/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Why ambient music helps you fall asleep</title>
+      <link>https://www.tranquilsoulmusic.com/journal/why-ambient-music-helps-you-sleep.html</link>
+      <guid isPermaLink="true">https://www.tranquilsoulmusic.com/journal/why-ambient-music-helps-you-sleep.html</guid>
+      <description>What sleep research shows about listening to music at night, and the four things that make a track work rather than keep you up.</description>
+      <pubDate>Tue, 01 Sep 2026 09:00:00 +0000</pubDate>
+      <enclosure url="https://www.tranquilsoulmusic.com/assets/og/journal-why-ambient-music-helps-you-sleep.jpg" type="image/jpeg" length="0"/>
+    </item>
+    <item>
+      <title>The right music for deep work</title>
+      <link>https://www.tranquilsoulmusic.com/journal/music-for-deep-work.html</link>
+      <guid isPermaLink="true">https://www.tranquilsoulmusic.com/journal/music-for-deep-work.html</guid>
+      <description>Why lyrics cost more attention than volume does, and how to choose background music that genuinely stays out of the way.</description>
+      <pubDate>Mon, 24 Aug 2026 09:00:00 +0000</pubDate>
+      <enclosure url="https://www.tranquilsoulmusic.com/assets/og/journal-music-for-deep-work.jpg" type="image/jpeg" length="0"/>
+    </item>
+    <item>
+      <title>Sauna and sound: building a heat ritual</title>
+      <link>https://www.tranquilsoulmusic.com/journal/sauna-and-sound.html</link>
+      <guid isPermaLink="true">https://www.tranquilsoulmusic.com/journal/sauna-and-sound.html</guid>
+      <description>How to structure a sauna session with breath and a fifteen-minute soundtrack, and why the music should be shorter than you think.</description>
+      <pubDate>Mon, 17 Aug 2026 09:00:00 +0000</pubDate>
+      <enclosure url="https://www.tranquilsoulmusic.com/assets/og/journal-sauna-and-sound.jpg" type="image/jpeg" length="0"/>
+    </item>
+  </channel>
+</rss>

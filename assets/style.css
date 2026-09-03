@@ -1069,3 +1069,205 @@ footer.site::before {
   background: var(--gold); color: #fff;
   padding: 10px 18px; border-radius: var(--radius-xs);
 }
+
+/* ─── Page transitions ───────────────────────────────────── */
+/* The ground colour lives on <html> too, so the moment between one document
+   unloading and the next painting is the same near-black rather than a white
+   flash. The fade itself is opacity only — a transform on <body> would make it
+   the containing block for the fixed gold bloom. */
+
+html { background: var(--bg); }
+
+/* Both directions are animations. Cancelling the entry animation and letting a
+   transition pick up the element does NOT fade — the element has no running
+   transition to inherit from and the opacity cuts straight to 0. Swapping one
+   animation for another is a clean discrete replacement, and always runs. */
+@media (prefers-reduced-motion: no-preference) {
+  .js body { animation: page-in .38s var(--ease-out) backwards; }
+  .js.is-leaving body { animation: page-out .2s var(--ease) forwards; }
+}
+@keyframes page-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes page-out { from { opacity: 1; } to { opacity: 0; } }
+
+/* ─── Radio visualiser ───────────────────────────────────── */
+/* The stream is a cross-origin YouTube iframe, so there is no waveform to
+   read. These are breathing rings on a fixed period — decorative, and only
+   ever shown while the player reports that it is actually playing. */
+
+.radio-viz {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity .9s var(--ease);
+}
+.radio-embed iframe { position: relative; z-index: 1; }
+
+.radio-player.is-playing .radio-viz { opacity: 1; }
+
+/* Glow and rings all sit in the one grid cell, so they stay stacked on the
+   iframe's centre without any of them needing to be taken out of flow.
+   --viz-w/--viz-h are measured off the iframe by site.js; the fallbacks only
+   apply for the frame or two before the first measurement lands. */
+.radio-viz > *,
+.radio-viz::after {
+  grid-area: 1 / 1;
+  width: var(--viz-w, 100%);
+  height: var(--viz-h, 100%);
+  border-radius: var(--radius);
+}
+
+.radio-viz::after {
+  content: "";
+  background: radial-gradient(60% 70% at 50% 50%, rgba(193,166,115,.16), transparent 72%);
+  filter: blur(26px);
+}
+
+.radio-ring {
+  border: 1px solid var(--gold);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .radio-viz::after { animation: radio-breathe 7.2s var(--ease) infinite; }
+  .radio-ring { animation: radio-ripple 5.4s var(--ease-out) infinite; }
+  .radio-ring:nth-child(2) { animation-delay: 1.8s; }
+  .radio-ring:nth-child(3) { animation-delay: 3.6s; }
+  /* Nothing runs while the stream is idle. */
+  .radio-viz:not(.is-live) .radio-ring,
+  .radio-viz:not(.is-live)::after { animation-play-state: paused; }
+}
+
+@keyframes radio-ripple {
+  0%   { opacity: 0;   transform: scale(1); }
+  14%  { opacity: .45; }
+  100% { opacity: 0;   transform: scale(var(--ripple-to, 1.16)); }
+}
+@media (max-width: 700px) {
+  .radio-ring { display: none; }
+}
+
+@keyframes radio-breathe {
+  0%, 100% { opacity: .55; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.035); }
+}
+
+/* ─── Magnetic buttons ───────────────────────────────────── */
+/* Only where there is a real cursor to be drawn towards. The offset arrives
+   as --mx/--my from site.js; every transform below has to carry it, or the
+   button would snap back to centre on hover. */
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .magnetic {
+    --mx: 0px;
+    --my: 0px;
+    transform: translate3d(var(--mx), var(--my), 0);
+    transition:
+      transform .55s var(--ease-out),
+      box-shadow .25s var(--ease),
+      background-color .25s var(--ease),
+      color .25s var(--ease);
+  }
+  .magnetic:hover  { transform: translate3d(var(--mx), calc(var(--my) - 2px), 0); }
+  .magnetic:active { transform: translate3d(var(--mx), var(--my), 0) scale(.975); }
+  /* While the cursor is inside the field the button tracks it closely; the
+     slow curve above is what makes the release feel elastic. */
+  .magnetic.is-pulled { transition-duration: .13s; }
+}
+
+/* ─── Editorial (journal) ────────────────────────────────── */
+/* The base h2 is a page-title size; inside a 66ch column it has to come down
+   to something a subhead can be. Everything else here is magazine furniture:
+   a drop cap to open the body text, quotes that break the measure. */
+
+article.post {
+  font-size: 1.06rem;
+  line-height: 1.78;
+}
+article.post p { margin: 0 0 1.15em; }
+article.post > p:not(.lede) { color: var(--text-2); }
+article.post strong { color: var(--text); font-weight: 500; }
+
+article.post .lede {
+  max-width: none;
+  font-size: clamp(1.2rem, 2.1vw, 1.42rem);
+  line-height: 1.55;
+  color: var(--text);
+  font-family: var(--display);
+  letter-spacing: .005em;
+  margin-bottom: 1.5em;
+}
+
+article.post h2 {
+  font-size: clamp(1.6rem, 2.6vw, 2.05rem);
+  line-height: 1.18;
+  color: var(--text);
+  margin: 2em 0 .55em;
+  letter-spacing: .012em;
+}
+/* A short gold rule sits above each subhead — the only ornament in the column. */
+article.post h2::before {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 1px;
+  margin-bottom: .7em;
+  background: linear-gradient(90deg, var(--gold), rgba(193,166,115,0));
+}
+
+article.post ul { padding-left: 1.1em; }
+article.post ul li::marker { color: var(--gold); }
+article.post li { margin-bottom: .55em; }
+
+/* Drop cap — site.js tags the first body paragraph, so a new article gets one
+   without anyone remembering to add a class. */
+article.post > p.has-dropcap::first-letter {
+  float: left;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 4.6em;
+  /* 4.6em x .755 = 58.9px against a 60.4px two-line box. Anything larger,
+     padding and margin included, spills into the third line. */
+  line-height: .755;
+  padding: 0 .07em 0 0;
+  margin: 0;
+  color: var(--gold-text);
+}
+@media (max-width: 560px) {
+  article.post > p.has-dropcap::first-letter { font-size: 3.8em; }
+}
+
+/* Pull quote */
+article.post blockquote {
+  position: relative;
+  margin: clamp(2rem, 4vw, 2.9rem) 0;
+  padding: 0 0 0 clamp(30px, 5vw, 54px);
+  border-left: 0;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: clamp(1.45rem, 3vw, 1.95rem);
+  line-height: 1.34;
+  letter-spacing: .006em;
+  color: var(--text);
+  text-wrap: balance;
+}
+article.post blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: 0;
+  top: .32em;
+  font-family: var(--display);
+  font-size: 3.6em;
+  line-height: 0;
+  color: var(--gold);
+  opacity: .3;
+}
+/* Once there is genuinely room outside the measure, the quote steps into it:
+   1100px of wrap + 40px padding + the 54px pull needs ~1180px before the
+   quote mark clears the viewport edge. */
+@media (min-width: 1180px) {
+  article.post blockquote { margin-left: -54px; }
+}
