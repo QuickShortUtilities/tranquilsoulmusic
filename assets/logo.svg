@@ -1,0 +1,21 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Center -->
+  <circle cx="50" cy="50" r="6.5" fill="currentColor" stroke="none" />
+  
+  <!-- Thin inner -->
+  <circle cx="50" cy="50" r="14" fill="none" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.2" />
+  
+  <!-- Thick inner -->
+  <circle cx="50" cy="50" r="23" fill="none" stroke="currentColor" stroke-width="2.5" />
+  
+  <!-- Thin middle -->
+  <circle cx="50" cy="50" r="32" fill="none" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.2" />
+  
+  <!-- Thin outer 1 with arc -->
+  <circle cx="50" cy="50" r="41" fill="none" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.2" />
+  <circle cx="50" cy="50" r="41" fill="none" stroke="currentColor" stroke-width="2.2" stroke-dasharray="64.4 200" transform="rotate(-90 50 50)" stroke-linecap="round" />
+  
+  <!-- Thin outer 2 with arc -->
+  <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-opacity="0.3" stroke-width="1.2" />
+  <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-dasharray="75.4 230" transform="rotate(90 50 50)" stroke-linecap="round" />
+</svg>
