@@ -1,72 +1,391 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tranquilicy - Neural Player</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tranquil Soul Music — Calming &amp; Ambient Music for Sleep, Focus &amp; Meditation</title>
+<meta name="description" content="Calming, ambient and soulful music for sleep, focus, meditation and the sauna. 5,500 original tracks. 24/7 radio. Available on Spotify, YouTube and the Tranquilicy app.">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="canonical" href="https://www.tranquilsoulmusic.com/">
+<meta property="og:title" content="Tranquil Soul Music">
+<meta property="og:description" content="Calming, ambient and soulful music for sleep, focus, meditation and the sauna.">
+<meta property="og:image" content="https://www.tranquilsoulmusic.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#090807">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<script>document.documentElement.classList.add("js")</script>
+<style>
+/* Radio embed */
+.radio-player { position: relative; max-width: 680px; margin: 0 auto; }
+.radio-embed  { position: relative; display: flex; align-items: center; justify-content: center; }
+.radio-embed iframe {
+  width: 100%; max-width: 600px; height: 340px;
+  border-radius: var(--radius); border: 1px solid var(--line);
+  box-shadow: var(--lift); background: #000;
+}
+.radio-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--line-hi);
+  background: rgba(9,8,7,.82); backdrop-filter: blur(14px);
+  color: var(--gold-text); font-size: 1.15rem;
+  cursor: pointer; display: grid; place-items: center; z-index: 2;
+  transition: border-color .28s var(--ease), background .28s var(--ease), transform .2s var(--ease);
+}
+.radio-nav:hover { border-color: rgba(193,166,115,.55); background: rgba(193,166,115,.1); }
+.radio-nav:active { transform: translateY(-50%) scale(.91); }
+.radio-nav--prev { left: -22px; }
+.radio-nav--next { right: -22px; }
+@media (max-width: 760px) {
+  .radio-nav--prev { left: 8px; }
+  .radio-nav--next { right: 8px; }
+  .radio-embed iframe { height: 250px; }
+}
+
+/* Collection cards */
+.collection-card {
+  text-align: center;
+  padding: clamp(36px,4vw,56px) clamp(24px,3vw,40px);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.collection-card-icon {
+  width: 48px; height: 48px; margin-bottom: 10px;
+  border: 1px solid rgba(193,166,115,.28);
+  border-radius: 50%;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 40% 35%, rgba(193,166,115,.14), transparent 70%);
+  color: var(--gold-text);
+  flex: 0 0 auto;
+}
+.collection-card h3 { font-size: clamp(1.55rem,2.8vw,2.1rem); margin: 0 0 .05em; }
+.collection-card .sub {
+  font-family: var(--display); font-style: italic;
+  font-size: .95rem; color: var(--gold-text); opacity: .72;
+  margin: 0 0 .75em;
+}
+.collection-card p { max-width: 28ch; margin: 0; }
+
+/* Leaves canvas — behind everything */
+#leaves-canvas {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+</style>
 </head>
 <body>
-    <div class="app-wrapper">
-        <header class="top-nav">
-            <h1 class="logo">Tranquilicy <span>NEURAL GENERATOR</span></h1>
-        </header>
 
-        <main class="player-container">
-            <div class="record-wrapper">
-                <div class="record-plate">
-                    <div class="record-center"></div>
-                </div>
-            </div>
+<!-- Golden falling leaves — home page only -->
+<canvas id="leaves-canvas" aria-hidden="true"></canvas>
 
-            <div class="track-details">
-                <h2 id="trackTitle" class="track-title">Ambient Serenity</h2>
-                <p id="trackNetwork" class="track-subtitle">Neural Generation: Model 5500</p>
-            </div>
+<a class="skip" href="#main">Skip to content</a>
 
-            <div class="controls-wrapper">
-                <div class="progress-area">
-                    <span id="currentTime" class="time">0:00</span>
-                    <div class="progress-bar-bg" id="progressBarBg">
-                        <div class="progress-bar-fill" id="progressBarFill"></div>
-                    </div>
-                    <span id="totalTime" class="time">4:20</span>
-                </div>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <circle cx="10" cy="10" r="8" stroke-opacity=".5"/>
+          <circle cx="10" cy="10" r="5" stroke-opacity=".7"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </span>
+      Tranquil Soul
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">&#9776;</button>
+    <nav class="nav-links" id="nav-links">
+      <a href="/" aria-current="page">Home</a>
+      <a href="/radio.html">Radio</a>
+      <a href="/app.html">App</a>
+      <a href="/journal.html">Journal</a>
+      <a href="/creators.html">Creators</a>
+      <a href="/licensing.html">Licensing</a>
+      <a href="/shop.html">Shop</a>
+    </nav>
+  </div>
+</header>
 
-                <div class="buttons">
-                    <button id="prevBtn" class="btn secondary-btn" aria-label="Previous">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="19 20 9 12 19 4 19 20"></polygon><line x1="5" y1="19" x2="5" y2="5"></line></svg>
-                    </button>
-                    <button id="playBtn" class="btn primary-btn" aria-label="Play/Pause">
-                        <span class="play-icon">
-                            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                        </span>
-                    </button>
-                    <button id="nextBtn" class="btn secondary-btn" aria-label="Next">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
-                    </button>
-                </div>
-            </div>
-        </main>
-        
-        <footer class="queue-container">
-            <p class="queue-title">Up Next</p>
-            <ul class="queue-list" id="queueList">
-                <li class="queue-item active">
-                    <span class="q-title">Ambient Serenity</span>
-                </li>
-                <li class="queue-item">
-                    <span class="q-title">Golden Hour Drift</span>
-                </li>
-                <li class="queue-item">
-                    <span class="q-title">Kyoto Rain</span>
-                </li>
-            </ul>
-        </footer>
+<main id="main">
+
+<!-- Hero — rings are a sibling of .wrap so they don't overlap content -->
+<section class="hero">
+  <svg class="hero-figure" viewBox="0 0 100 100" aria-hidden="true">
+    <circle cx="50" cy="50" r="47"/>
+    <circle cx="50" cy="50" r="36"/>
+    <circle cx="50" cy="50" r="24"/>
+    <circle cx="50" cy="50" r="13"/>
+    <circle class="core" cx="50" cy="50" r="5"/>
+    <circle class="ping" cx="50" cy="50" r="5"/>
+    <circle class="ping" cx="50" cy="50" r="5"/>
+  </svg>
+  <div class="wrap">
+    <p class="eyebrow">Ambient &middot; Meditation &middot; Sleep</p>
+    <h1>Music for the<br>quiet hours.</h1>
+    <p class="lede">5,500 original tracks for sleep, focus, the gym, the sauna and everything in between. One writer. No samples. Always calm.</p>
+    <div class="hero-actions">
+      <a href="/radio.html" class="btn btn-primary">Listen free &rarr;</a>
+      <a href="/app.html" class="btn btn-ghost">Get the app</a>
     </div>
-    <script src="main.js"></script>
+    <div class="proof">
+      <div><strong>5,500</strong><span>Tracks</span></div>
+      <div><strong>21M+</strong><span>Creator uses</span></div>
+      <div><strong>24/7</strong><span>Radio</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section><div class="wrap">
+  <div class="section-head reveal">
+    <p class="eyebrow">Catalogue highlights</p>
+    <h2>Sound built for stillness.</h2>
+    <p>Not a general music library with a wellness folder bolted on. Every track here was made for calm.</p>
+  </div>
+  <div class="grid grid-2">
+    <div class="card collection-card reveal">
+      <div class="collection-card-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+        </svg>
+      </div>
+      <h3>Mind Body Beats</h3>
+      <p class="sub">&ndash; The Yoga Collection &ndash;</p>
+      <p>Serene cosmic soundscapes built around breath, not the beat of a drum.</p>
+    </div>
+    <div class="card collection-card reveal" style="--d:.08s">
+      <div class="collection-card-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3v5zm-16 0a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3v5z"/>
+        </svg>
+      </div>
+      <h3>Creation Series</h3>
+      <p class="sub">&ndash; Forming the World &ndash;</p>
+      <p>Unhurried ambient pieces for mindful work and the spaces between thoughts.</p>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:clamp(32px,4vw,48px)" class="reveal" style="--d:.14s">
+    <a href="/discography.html" class="btn btn-ghost">Explore the full catalogue</a>
+  </div>
+</div></section>
+
+<hr class="rule">
+
+<section><div class="wrap">
+  <div style="text-align:center; margin-bottom:clamp(28px,4vw,44px)" class="reveal">
+    <p class="eyebrow">Always on</p>
+    <h2>Tranquil Soul Radio 24/7</h2>
+    <p style="max-width:44ch; margin:0 auto">Ambient, lo-fi and deep focus streams. No ads, no interruptions.</p>
+  </div>
+  <div class="radio-player reveal" style="--d:.1s">
+    <div class="radio-embed">
+      <button class="radio-nav radio-nav--prev" id="radio-prev" aria-label="Previous station">&#8249;</button>
+      <iframe id="radio-iframe" src="" title="Tranquil Soul Radio"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+      <button class="radio-nav radio-nav--next" id="radio-next" aria-label="Next station">&#8250;</button>
+    </div>
+  </div>
+  <p style="text-align:center; margin-top:20px; margin-bottom:0">
+    <a href="/radio.html" class="btn btn-ghost" style="font-size:.75rem">Full radio page &rarr;</a>
+  </p>
+</div></section>
+
+<hr class="rule">
+
+<section class="tight"><div class="wrap"><div class="card capture reveal" style="max-width:620px; margin:0 auto">
+  <p class="eyebrow">The Sunday send</p>
+  <h2 style="font-size:clamp(1.6rem,2.8vw,2.1rem)">One track. One thing worth reading.</h2>
+  <p>Every Sunday &mdash; an unreleased piece of music and a short note on sleep, attention or recovery. Free, always.</p>
+  <form data-capture="home" data-endpoint="https://lorna-api.tranquilsoul.workers.dev/v1/subscribe">
+    <div class="form-row">
+      <label class="skip" for="email-home">Email address</label>
+      <input id="email-home" type="email" name="email" placeholder="you@example.com" required autocomplete="email">
+      <button class="btn btn-primary" type="submit">Join free</button>
+    </div>
+    <p class="form-status" role="status"></p>
+    <p class="form-note">Free forever. No spam. Unsubscribe anytime.</p>
+  </form>
+</div></div></section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap foot-brand">
+    <a class="brand" href="/">
+      <span class="brand-mark">
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <circle cx="10" cy="10" r="8" stroke-opacity=".5"/>
+          <circle cx="10" cy="10" r="5" stroke-opacity=".7"/>
+          <circle cx="10" cy="10" r="2" fill="currentColor" stroke="none"/>
+        </svg>
+      </span>
+      Tranquil Soul Music
+    </a>
+    <p>Calming and soulful music for sleep, focus,<br>meditation and the sauna.</p>
+    <!-- Social icons injected by site.js -->
+  </div>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><h4>Listen</h4>
+        <a href="/radio.html">24/7 Radio</a>
+      </div>
+      <div><h4>Explore</h4>
+        <a href="/app.html">The app</a>
+        <a href="/discography.html">Discography</a>
+        <a href="/journal.html">Journal</a>
+        <a href="/shop.html">Shop</a>
+      </div>
+      <div><h4>Business</h4>
+        <a href="/creators.html">For creators</a>
+        <a href="/licensing.html">Sync licensing</a>
+        <a href="mailto:relax@tranquilsoulmusic.com">relax@tranquilsoulmusic.com</a>
+      </div>
+      <div><h4>Elsewhere</h4>
+        <a href="https://www.tranquilsleepmusic.com/" rel="noopener">Tranquil Sleep Music</a>
+        <a href="https://www.sub-liminal.com/" rel="noopener">Sub-Liminal</a>
+      </div>
+    </div>
+    <div class="foot-legal">
+      <span>&copy; <span data-year></span> Tranquil Soul Music</span>
+      <span><a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/site.js?v=2"></script>
+
+<!-- Golden feathers — home page only, respects prefers-reduced-motion -->
+<script>
+(function () {
+  "use strict";
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  var canvas = document.getElementById("leaves-canvas");
+  var ctx = canvas.getContext("2d");
+  var W = 0, H = 0, items = [], raf;
+  var N = 18; // Slightly fewer, more elegant
+
+  // Soft gold palette
+  var COLORS = [
+    [193, 166, 115],
+    [212, 185, 122],
+    [165, 139,  88]
+  ];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function makeFeather(fromTop) {
+    var c = COLORS[Math.floor(Math.random() * COLORS.length)];
+    return {
+      x:         rand(0, W),
+      y:         fromTop ? rand(-120, -10) : rand(0, H),
+      size:      rand(7, 16), // Slightly longer
+      speedY:    rand(0.2, 0.6), // Slower, driftier
+      drift:     rand(-0.1, 0.1),
+      rot:       rand(0, Math.PI * 2),
+      rotSpeed:  rand(-0.008, 0.008),
+      swayPhase: rand(0, Math.PI * 2),
+      swaySpeed: rand(0.004, 0.012),
+      swayAmt:   rand(0.3, 0.8),
+      alpha:     rand(0.04, 0.12), // Softer opacity
+      r: c[0], g: c[1], b: c[2]
+    };
+  }
+
+  function drawFeather(l) {
+    ctx.save();
+    ctx.translate(l.x, l.y);
+    ctx.rotate(l.rot);
+    ctx.globalAlpha = l.alpha;
+    
+    // Soft gradient for an ethereal feather look
+    var grad = ctx.createLinearGradient(0, -l.size*2, 0, l.size*2);
+    grad.addColorStop(0, "rgba(" + l.r + "," + l.g + "," + l.b + ", 0)");
+    grad.addColorStop(0.2, "rgba(" + l.r + "," + l.g + "," + l.b + ", 1)");
+    grad.addColorStop(0.8, "rgba(" + l.r + "," + l.g + "," + l.b + ", 0.8)");
+    grad.addColorStop(1, "rgba(" + l.r + "," + l.g + "," + l.b + ", 0)");
+    ctx.fillStyle = grad;
+    
+    // Sleek asymmetrical shape
+    ctx.beginPath();
+    ctx.moveTo(0, -l.size * 2);
+    ctx.bezierCurveTo(l.size * 0.5, -l.size, l.size * 0.3, l.size, 0, l.size * 2);
+    ctx.bezierCurveTo(-l.size * 0.25, l.size, -l.size * 0.4, -l.size, 0, -l.size * 2);
+    ctx.fill();
+
+    // Delicate quill shaft extending past the base
+    ctx.globalAlpha = l.alpha * 0.85;
+    ctx.strokeStyle = "rgb(" + l.r + "," + l.g + "," + l.b + ")";
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(0, -l.size * 1.8);
+    ctx.quadraticCurveTo(l.size * 0.1, 0, -l.size * 0.1, l.size * 2.3);
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < items.length; i++) {
+      var l = items[i];
+      l.swayPhase += l.swaySpeed;
+      l.x += l.drift + Math.sin(l.swayPhase) * l.swayAmt;
+      l.y += l.speedY;
+      l.rot += l.rotSpeed;
+      if (l.y > H + l.size * 3) { items[i] = makeFeather(true); }
+      drawFeather(l);
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function init() {
+    resize();
+    items = [];
+    for (var i = 0; i < N; i++) { items.push(makeFeather(false)); }
+    if (raf) cancelAnimationFrame(raf);
+    frame();
+  }
+
+  init();
+  window.addEventListener("resize", function () { resize(); });
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+  var stations = [
+    { id: "bk4L_Smoh7c", title: "Unlimited Chill" },
+    { id: "jfKfPfyJRdk", title: "Lofi Hip Hop" },
+    { id: "rUxyKA_-grg", title: "Cosmic Adrift" }
+  ];
+  var current = 0;
+  var iframe = document.getElementById("radio-iframe");
+  function goTo(index) {
+    try { iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', "*"); } catch (e) {}
+    current = ((index % stations.length) + stations.length) % stations.length;
+    iframe.src = "https://www.youtube.com/embed/" + stations[current].id + "?enablejsapi=1&autoplay=1";
+  }
+  document.getElementById("radio-prev").addEventListener("click", function () { goTo(current - 1); });
+  document.getElementById("radio-next").addEventListener("click", function () { goTo(current + 1); });
+  goTo(0);
+})();
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "REPLACE_WITH_CLOUDFLARE_ANALYTICS_TOKEN"}'></script>
 </body>
 </html>

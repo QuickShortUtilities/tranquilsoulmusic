@@ -3,14 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>24/7 ambient radio — Tranquil Soul</title>
-<meta name="description" content="Three continuous ambient streams for sleep, focus and the end of the day. Free, no account needed.">
+<title>Radio — Tranquil Soul</title>
+<meta name="description" content="Tranquil Soul Radio 24/7. Cycle through our live streams — ambient, lo-fi and deep focus. No ads, no interruptions.">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
 <link rel="canonical" href="https://www.tranquilsoulmusic.com/radio.html">
-<meta property="og:title" content="24/7 ambient radio — Tranquil Soul">
-<meta property="og:description" content="Three continuous ambient streams for sleep, focus and the end of the day. Free, no account needed.">
+<meta property="og:title" content="Radio — Tranquil Soul">
+<meta property="og:description" content="Tranquil Soul Radio 24/7. Cycle through our live streams — ambient, lo-fi and deep focus.">
 <meta property="og:image" content="https://www.tranquilsoulmusic.com/assets/og.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0b0a09">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,12 +17,107 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
 <script>document.documentElement.classList.add("js")</script>
+<style>
+/* Radio player — YouTube embed carousel, styled to match the site. */
+.radio-player {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.radio-embed {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.radio-embed iframe {
+  width: 100%;
+  max-width: 640px;
+  height: 360px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  box-shadow: var(--lift);
+  background: #000;
+}
+.radio-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(42, 32, 34, .82);
+  backdrop-filter: blur(12px);
+  color: var(--gold-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: border-color .3s var(--ease), background-color .3s var(--ease), transform .22s var(--ease);
+  z-index: 2;
+}
+.radio-nav:hover {
+  border-color: rgba(201, 169, 97, .5);
+  background: rgba(201, 169, 97, .12);
+}
+.radio-nav:active { transform: translateY(-50%) scale(.93); }
+.radio-nav--prev { left: -22px; }
+.radio-nav--next { right: -22px; }
+@media (max-width: 780px) {
+  .radio-nav--prev { left: 8px; }
+  .radio-nav--next { right: 8px; }
+  .radio-embed iframe { height: 280px; }
+}
+.radio-info {
+  text-align: center;
+  margin-top: 28px;
+}
+.radio-info h3 {
+  font-size: 1.45rem;
+  margin-bottom: .3em;
+}
+.radio-info p {
+  font-size: .92rem;
+  color: var(--text-2);
+  margin: 0;
+}
+.radio-hint {
+  text-align: center;
+  margin-top: 16px;
+  font-size: .72rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+/* Station dots */
+.radio-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+.radio-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background .3s var(--ease), box-shadow .3s var(--ease);
+}
+.radio-dot.is-active {
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgba(201, 169, 97, .18);
+}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="/"><svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="11"/><circle cx="12" cy="12" r="7.4"/><circle class="core" cx="12" cy="12" r="3.4"/></svg>Tranquil Soul</a>
+    <a class="brand" href="/"><span class="brand-mark"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke-opacity=".5"/><circle cx="10" cy="10" r="5" stroke-opacity=".7"/><circle cx="10" cy="10" r="2" fill="currentColor" stroke="none"/></svg></span>Tranquil Soul</a>
     <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">&#9776;</button>
     <nav class="nav-links" id="nav-links">
       <a href="/">Home</a>
@@ -38,32 +132,36 @@
 </header>
 <main id="main">
 
-<section class="hero" style="padding:72px 0 40px"><div class="wrap">
-  <p class="eyebrow">Live &middot; always on</p>
-  <h1>24/7 radio.</h1>
-  <p class="lede">Three continuous streams. Free, no account, nothing to install.</p>
+<section class="hero" style="padding:72px 0 48px"><div class="wrap">
+  <p class="eyebrow">Tranquil Soul Radio</p>
+  <h1>Tranquil Soul<br>Radio 24/7</h1>
+  <p class="lede">Cycle through our live streams with the &lt; &gt; arrows. Ambient, lo-fi and deep focus &mdash; no ads, no interruptions.</p>
 </div></section>
+
 <section style="padding-top:0"><div class="wrap">
-  <div class="player reveal">
-    <button class="play-btn" id="radio-play" aria-label="Play radio">&#9654;</button>
-    <div class="player-meta">
-      <div class="name" id="radio-name">Deep Space</div>
-      <div class="state" id="radio-state">Ready</div>
+  <div class="radio-player reveal">
+    <div class="radio-embed">
+      <button class="radio-nav radio-nav--prev" id="radio-prev" aria-label="Previous station">&#8249;</button>
+      <iframe id="radio-iframe"
+              src=""
+              title="Tranquil Soul Radio"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen></iframe>
+      <button class="radio-nav radio-nav--next" id="radio-next" aria-label="Next station">&#8250;</button>
     </div>
-    <label><span class="skip">Volume</span>
-      <input class="vol" id="radio-vol" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume"></label>
-    <audio id="radio-audio" preload="none"></audio>
+    <div class="radio-info">
+      <h3 id="radio-title"></h3>
+      <p id="radio-desc"></p>
+    </div>
+    <div class="radio-dots" id="radio-dots"></div>
+    <p class="radio-hint">Use the &lt; &gt; to scroll through our radio streams</p>
   </div>
-  <div class="station-list reveal">
-    <button class="station" data-name="Deep Space" data-src="https://streams.tranquilsoulmusic.com/deepspace.mp3">
-      <span class="dot"></span><span>Deep Space<small>Slow, dark and wide. For sleep and long work.</small></span></button>
-    <button class="station" data-name="Golden Hour" data-src="https://streams.tranquilsoulmusic.com/goldenhour.mp3">
-      <span class="dot"></span><span>Golden Hour<small>Warm and unhurried. For the end of the day.</small></span></button>
-    <button class="station" data-name="Still Water" data-src="https://streams.tranquilsoulmusic.com/stillwater.mp3">
-      <span class="dot"></span><span>Still Water<small>Dry and articulate. Stays out of the way.</small></span></button>
-  </div>
-  <p class="form-note" style="margin-top:20px">Streams keep playing while you use other tabs. On iPhone, the app plays with the screen locked.</p>
 </div></section>
+
+<hr class="rule">
+
 <section class="tight"><div class="wrap"><div class="card capture reveal">
   <p class="eyebrow">The Sunday send</p>
   <h3 style="font-size:1.6rem">One piece of music, one thing worth reading.</h3>
@@ -77,15 +175,15 @@
     <p class="form-status" role="status"></p>
     <p class="form-note">Free forever. We never sell your address.</p>
   </form>
-</div></div></section></main>
-<footer class="site">
+</div></div></section>
+</main>
+
+<footer class="site"><div class="wrap foot-brand"><a class="brand" href="/"><span class="brand-mark"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke-opacity=".5"/><circle cx="10" cy="10" r="5" stroke-opacity=".7"/><circle cx="10" cy="10" r="2" fill="currentColor" stroke="none"/></svg></span>Tranquil Soul Music</a><p>Calming and soulful music for sleep, focus,<br>meditation and the sauna.</p></div>
   <div class="wrap">
     <div class="foot-grid">
       <div><h4>Listen</h4>
         <a href="/radio.html">24/7 Radio</a>
-        <a href="https://open.spotify.com/" rel="noopener">Spotify</a>
-        <a href="https://www.youtube.com/" rel="noopener">YouTube</a>
-        <a href="https://soundcloud.com/" rel="noopener">SoundCloud</a></div>
+      </div>
       <div><h4>Explore</h4>
         <a href="/app.html">The app</a>
         <a href="/journal.html">Journal</a>
@@ -105,6 +203,81 @@
   </div>
 </footer>
 <script src="/assets/site.js"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "REPLACE_WITH_CLOUDFLARE_ANALYTICS_TOKEN"}'></script>
+<script>
+(function () {
+  "use strict";
+
+  // ——— Station list — add as many as you like ———
+  var stations = [
+    {
+      id: "bk4L_Smoh7c",
+      title: "🎧 Unlimited Chill - Lofi Lofts 🏙️",
+      desc: "Your Cozy Escape to Smooth Lo-Fi Beats"
+    },
+    {
+      id: "jfKfPfyJRdk",
+      title: "☕ Lofi Hip Hop Radio",
+      desc: "Beats to relax / study to"
+    },
+    {
+      id: "rUxyKA_-grg",
+      title: "🌌 Cosmic Adrift Radio",
+      desc: "Deep ambient soundscapes for meditation"
+    }
+  ];
+
+  var current = 0;
+  var iframe = document.getElementById("radio-iframe");
+  var titleEl = document.getElementById("radio-title");
+  var descEl = document.getElementById("radio-desc");
+  var dotsWrap = document.getElementById("radio-dots");
+
+  // Build dots
+  stations.forEach(function (_, i) {
+    var dot = document.createElement("button");
+    dot.className = "radio-dot" + (i === 0 ? " is-active" : "");
+    dot.setAttribute("aria-label", "Station " + (i + 1));
+    dot.addEventListener("click", function () { goTo(i); });
+    dotsWrap.appendChild(dot);
+  });
+
+  function goTo(index) {
+    // Stop the current video before switching
+    try {
+      iframe.contentWindow.postMessage(
+        '{"event":"command","func":"pauseVideo","args":""}', "*"
+      );
+    } catch (e) { /* cross-origin, fine */ }
+
+    current = ((index % stations.length) + stations.length) % stations.length;
+    var s = stations[current];
+    iframe.src = "https://www.youtube.com/embed/" + s.id + "?enablejsapi=1&autoplay=1";
+    titleEl.textContent = s.title;
+    descEl.textContent = s.desc;
+
+    // Update dots
+    var dots = dotsWrap.querySelectorAll(".radio-dot");
+    dots.forEach(function (d, i) {
+      d.classList.toggle("is-active", i === current);
+    });
+  }
+
+  document.getElementById("radio-prev").addEventListener("click", function () {
+    goTo(current - 1);
+  });
+  document.getElementById("radio-next").addEventListener("click", function () {
+    goTo(current + 1);
+  });
+
+  // Keyboard nav
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") goTo(current - 1);
+    else if (e.key === "ArrowRight") goTo(current + 1);
+  });
+
+  // Load first station
+  goTo(0);
+})();
+</script>
 </body>
 </html>
