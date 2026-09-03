@@ -67,3 +67,16 @@ site ranks for — `_redirects` already handles the old `/discography` and
       replaces the href. Then flip `availability` in each product page's
       JSON-LD from `PreOrder` to `InStock`.
 - [ ] Set the canonical domain in every `<link rel="canonical">` and `sitemap.xml`.
+
+## The product catalogue
+
+`data/catalogue.json` is the single source of truth for physical goods. The shop
+pages are built from it, and the iOS app bundles a copy and decodes it at
+runtime. Change a price here and both follow; change it in one client and they
+drift, which is the failure this file exists to prevent.
+
+After editing, refresh the app's copy:
+
+```
+cp data/catalogue.json ../Tranquilicy/Tranquilicy/Resources/catalogue.json
+```

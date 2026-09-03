@@ -1,0 +1,283 @@
+{
+  "brand": "Tranquil Soul",
+  "currency": "GBP",
+  "note": "Single source of truth for physical goods. The website is built from this file and the iOS app decodes it at runtime from the bundle — editing it in two places is how they drift apart.",
+  "categories": [
+    {
+      "id": "scent",
+      "title": "Candles & scent",
+      "symbol": "flame"
+    },
+    {
+      "id": "home",
+      "title": "For the home",
+      "symbol": "lamp.table"
+    },
+    {
+      "id": "recovery",
+      "title": "Recovery",
+      "symbol": "figure.cooldown"
+    },
+    {
+      "id": "wear",
+      "title": "Wear",
+      "symbol": "tshirt"
+    },
+    {
+      "id": "sound",
+      "title": "Sound",
+      "symbol": "headphones"
+    }
+  ],
+  "products": [
+    {
+      "id": "candle-cedar",
+      "name": "Cedar & Smoke",
+      "category": "scent",
+      "blurb": "220g soy wax, cotton wick. Around 50 hours.",
+      "detail": "Cedarwood over woodsmoke and dry stone. Poured in small batches in Yorkshire. Reusable amber glass.",
+      "price": 42,
+      "contexts": [
+        "sauna",
+        "unwind"
+      ],
+      "tint": [
+        "C2703C",
+        "4E2412"
+      ]
+    },
+    {
+      "id": "candle-vetiver",
+      "name": "Night Vetiver",
+      "category": "scent",
+      "blurb": "220g soy wax. Vetiver, iris, cold ash.",
+      "detail": "Made for the hour before sleep. Earthy rather than sweet, and quiet enough to leave burning while you read.",
+      "price": 42,
+      "contexts": [
+        "sleep",
+        "unwind"
+      ],
+      "tint": [
+        "4A4E6B",
+        "1A1C28"
+      ]
+    },
+    {
+      "id": "loyly-oil",
+      "name": "Löyly Oil",
+      "category": "scent",
+      "blurb": "100ml. Birch and eucalyptus, for the water.",
+      "detail": "A capful in the bucket. Finnish birch with eucalyptus and a little pine tar. Not for skin.",
+      "price": 26,
+      "contexts": [
+        "sauna"
+      ],
+      "tint": [
+        "B88746",
+        "44301A"
+      ]
+    },
+    {
+      "id": "incense",
+      "name": "Cedar Incense",
+      "category": "scent",
+      "blurb": "60 sticks, 25 minutes each.",
+      "detail": "Japanese-style, bamboo-free, so it burns without the sharp edge. Same cedar as the candle.",
+      "price": 22,
+      "contexts": [
+        "unwind",
+        "focus"
+      ],
+      "tint": [
+        "B5763A",
+        "3A2412"
+      ]
+    },
+    {
+      "id": "diffuser",
+      "name": "Stone Diffuser",
+      "category": "home",
+      "blurb": "Cast concrete, ultrasonic. Eight hours, silent.",
+      "detail": "Cast by hand, so no two are identical. One button, no app, no light. Runs eight hours on a fill.",
+      "price": 78,
+      "contexts": [
+        "sleep",
+        "unwind",
+        "recover"
+      ],
+      "tint": [
+        "9BA4AC",
+        "383E43"
+      ]
+    },
+    {
+      "id": "speaker",
+      "name": "Room Speaker",
+      "category": "home",
+      "blurb": "Single full-range driver in oiled ash.",
+      "detail": "One driver, no crossover, no seams to buzz. Pairs in a tap and stays paired. Twelve hours a charge. Not rated for sauna heat — use it outside the room.",
+      "price": 145,
+      "contexts": [
+        "unwind",
+        "focus"
+      ],
+      "tint": [
+        "A2937A",
+        "37312A"
+      ]
+    },
+    {
+      "id": "throw",
+      "name": "Wool Throw",
+      "category": "home",
+      "blurb": "Lambswool, 130×180cm. Woven in Yorkshire.",
+      "detail": "Undyed lambswool from a mill that has been running since 1837. Heavy enough to stay put.",
+      "price": 95,
+      "contexts": [
+        "unwind",
+        "recover",
+        "sleep"
+      ],
+      "tint": [
+        "8A9179",
+        "2E332B"
+      ]
+    },
+    {
+      "id": "print-deep",
+      "name": "Deep Space Print",
+      "category": "home",
+      "blurb": "A2 giclée, signed. Edition of 100.",
+      "detail": "The waveform of the piece the station is named after, printed on 310gsm cotton rag.",
+      "price": 55,
+      "contexts": [
+        "sleep",
+        "focus"
+      ],
+      "tint": [
+        "3E4A6B",
+        "161A28"
+      ]
+    },
+    {
+      "id": "eye-mask",
+      "name": "Weighted Eye Mask",
+      "category": "recovery",
+      "blurb": "Silk shell, glass-bead fill, 180g.",
+      "detail": "Heavy enough to feel, light enough to forget. Mulberry silk, removable strap, washable.",
+      "price": 38,
+      "contexts": [
+        "sleep",
+        "recover"
+      ],
+      "tint": [
+        "6B6480",
+        "231F2E"
+      ]
+    },
+    {
+      "id": "roller",
+      "name": "Cork Roller",
+      "category": "recovery",
+      "blurb": "Solid cork, 33cm.",
+      "detail": "Portuguese cork, turned solid rather than moulded over foam, so it does not soften with use.",
+      "price": 46,
+      "contexts": [
+        "gym",
+        "recover"
+      ],
+      "tint": [
+        "C09A66",
+        "453324"
+      ]
+    },
+    {
+      "id": "tee",
+      "name": "Catalogue Tee",
+      "category": "wear",
+      "blurb": "Heavyweight organic cotton, screen printed.",
+      "detail": "240gsm organic cotton, boxy cut, printed with the catalogue index. Washes without cracking.",
+      "price": 34,
+      "contexts": [
+        "gym"
+      ],
+      "tint": [
+        "B0A695",
+        "3A3730"
+      ]
+    },
+    {
+      "id": "sweat",
+      "name": "Studio Sweat",
+      "category": "wear",
+      "blurb": "400gsm loopback cotton. Undyed.",
+      "detail": "Heavy loopback, undyed so the colour is the cotton's own. Ribbed cuffs that hold their shape.",
+      "price": 89,
+      "contexts": [
+        "unwind",
+        "gym"
+      ],
+      "tint": [
+        "7E776B",
+        "2B2823"
+      ]
+    },
+    {
+      "id": "sleep-buds",
+      "name": "Sleep Buds",
+      "category": "sound",
+      "blurb": "Side-sleeper fit, ten hour battery.",
+      "detail": "4mm profile, so they sit flush enough to sleep on your side. Ten hours, and they will not wake you.",
+      "price": 129,
+      "contexts": [
+        "sleep"
+      ],
+      "tint": [
+        "7C8896",
+        "2B3239"
+      ]
+    },
+    {
+      "id": "headphones",
+      "name": "Closed-Back Headphones",
+      "category": "sound",
+      "blurb": "40mm drivers, replaceable pads.",
+      "detail": "Tuned flat rather than scooped, because ambient music lives in the mids. Every part replaceable.",
+      "price": 249,
+      "contexts": [
+        "focus",
+        "unwind"
+      ],
+      "tint": [
+        "5A6066",
+        "212427"
+      ]
+    }
+  ],
+  "contexts": [
+    {
+      "id": "sleep",
+      "title": "Sleep"
+    },
+    {
+      "id": "unwind",
+      "title": "Unwind"
+    },
+    {
+      "id": "focus",
+      "title": "Focus"
+    },
+    {
+      "id": "gym",
+      "title": "Training"
+    },
+    {
+      "id": "sauna",
+      "title": "Sauna"
+    },
+    {
+      "id": "recover",
+      "title": "Recovery"
+    }
+  ]
+}
